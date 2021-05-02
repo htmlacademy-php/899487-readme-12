@@ -109,7 +109,7 @@ $user_name = 'Sergei'; // укажите здесь ваше имя
                     </li>
                 </ul>
             </nav>
-						<?php endif ?>
+            <?php endif ?>
         </div>
     </div>
 </header>
