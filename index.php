@@ -59,7 +59,6 @@ $user_name = 'Sergei'; // укажите здесь ваше имя
                         </a>
                     </li>
                 </ul>
-                <?php endif ?>
                 <ul class="header__user-nav">
                     <li class="header__profile">
                         <a class="header__profile-link" href="#">
@@ -110,6 +109,7 @@ $user_name = 'Sergei'; // укажите здесь ваше имя
                     </li>
                 </ul>
             </nav>
+						<?php endif ?>
         </div>
     </div>
 </header>
