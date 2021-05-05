@@ -5,39 +5,39 @@
 
   $array = [
     [
-      'title'  =>  'Цитата',
-      'type'  =>  'post-quote',
-      'content'  =>'  Мы в жизни любим только раз, а после ищем лишьпохожих',
-      'username'  =>  'Лариса',
-      'avatar'  =>  'userpic-larisa-small.jpg',
+      'title'=>'Цитата',
+      'type'=>'post-quote',
+      'content'=>'Мы в жизни любим только раз, а после ищем лишь похожих',
+      'username'=>'Лариса',
+      'avatar'=>'userpic-larisa-small.jpg',
     ],
     [
-      'title'  =>  'Игра престолов',
-      'type'  =>  'post-text',
-      'content'  =>  'Не могу дождаться начала финального сезона своеголюбимого сериала!',
-      'username'  =>  'Владик',
-      'avatar'  =>  'userpic.jpg',
+      'title'=>'Игра престолов',
+      'type'=>'post-text',
+      'content'=>'Не могу дождаться начала финального сезона своего любимого сериала!',
+      'username'=>'Владик',
+      'avatar'=>'userpic.jpg',
     ],
     [
-      'title'  =>  'Наконец, обработал фотки!',
-      'type'  =>  'post-photo',
-      'content'  =>  'rock-medium.jpg',
-      'username'  =>  'Виктор',
-      'avatar'  =>  'userpic-mark.jpg',
+      'title'=>'Наконец, обработал фотки!',
+      'type'=>'post-photo',
+      'content'=>'rock-medium.jpg',
+      'username'=>'Виктор',
+      'avatar'=>'userpic-mark.jpg',
     ],
     [
-      'title'  =>  'Моя мечта',
-      'type'  =>  'post-photo',
-      'content'  =>  'coast-medium.jpg',
-      'username'  =>  'Лариса',
-      'avatar'  =>  'userpic-larisa-small.jpg',
+      'title'=>'Моя мечта',
+      'type'=>'post-photo',
+      'content'=>'coast-medium.jpg',
+      'username'=>'Лариса',
+      'avatar'=>'userpic-larisa-small.jpg',
     ],
     [
-      'title'  =>  'Лучшие курсы',
-      'type'  =>  'post-link',
-      'content'  =>  'www.htmlacademy.ru',
-      'username'  =>  'Владик',
-      'avatar'  =>  'userpic.jpg',
+      'title'=>'Лучшие курсы',
+      'type'=>'post-link',
+      'content'=>'www.htmlacademy.ru',
+      'username'=>'Владик',
+      'avatar'=>'userpic.jpg',
     ],
   ];
 ?>
@@ -302,7 +302,7 @@
                                 <img class="post__author-avatar" src="img/<?= $item['avatar'] ?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?= $item['name']</b>
+                                <b class="post__author-name"><?= $item['username'] ?></b>
                                 <time class="post__time" datetime="">дата</time>
                             </div>
                         </a>
