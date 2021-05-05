@@ -3,6 +3,17 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Sergei'; // укажите здесь ваше имя
 ?>
+
+<?php
+    [
+        'title' =>  'Цитата',
+        'type'  =>  'post-quote',
+        'content'  =>  'Мы в жизни любим только раз, а после ищем лишь похожих',
+        'username'  => 'Лариса',
+        'avatart'
+    ]
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
