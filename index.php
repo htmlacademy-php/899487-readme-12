@@ -5,39 +5,39 @@
 
   $array = [
     [
-      'title'=>'Цитата',
-      'type'=>'post-quote',
-      'content'=>'Мы в жизни любим только раз, а после ищем лишь похожих',
-      'username'=>'Лариса',
-      'avatar'=>'userpic-larisa-small.jpg',
+      'title' => 'Цитата',
+      'type' => 'post-quote',
+      'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
+      'username' => 'Лариса',
+      'avatar' => 'userpic-larisa-small.jpg',
     ],
     [
-      'title'=>'Игра престолов',
-      'type'=>'post-text',
-      'content'=>'Не могу дождаться начала финального сезона своего любимого сериала!',
-      'username'=>'Владик',
-      'avatar'=>'userpic.jpg',
+      'title' => 'Игра престолов',
+      'type' => 'post-text',
+      'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
+      'username' => 'Владик',
+      'avatar' => 'userpic.jpg',
     ],
     [
-      'title'=>'Наконец, обработал фотки!',
-      'type'=>'post-photo',
-      'content'=>'rock-medium.jpg',
-      'username'=>'Виктор',
-      'avatar'=>'userpic-mark.jpg',
+      'title' => 'Наконец, обработал фотки!',
+      'type' => 'post-photo',
+      'content' => 'rock-medium.jpg',
+      'username' => 'Виктор',
+      'avatar' => 'userpic-mark.jpg',
     ],
     [
-      'title'=>'Моя мечта',
-      'type'=>'post-photo',
-      'content'=>'coast-medium.jpg',
-      'username'=>'Лариса',
-      'avatar'=>'userpic-larisa-small.jpg',
+      'title' => 'Моя мечта',
+      'type' => 'post-photo',
+      'content' => 'coast-medium.jpg',
+      'username' => 'Лариса',
+      'avatar' => 'userpic-larisa-small.jpg',
     ],
     [
-      'title'=>'Лучшие курсы',
-      'type'=>'post-link',
-      'content'=>'www.htmlacademy.ru',
-      'username'=>'Владик',
-      'avatar'=>'userpic.jpg',
+      'title' => 'Лучшие курсы',
+      'type' => 'post-link',
+      'content' => 'www.htmlacademy.ru',
+      'username' => 'Владик',
+      'avatar' => 'userpic.jpg',
     ],
   ];
 ?>
@@ -241,7 +241,7 @@
         </div>
         <div class="popular__posts">
           <?php foreach ($array as $item): ?>
-          <article class="popular__post post <?= item['type'] ?>">
+          <article class="popular__post post <?= $item['type'] ?>">
               <header class="post__header">
                 <h2><?= $item['title'] ?></h2>
               </header>
@@ -259,7 +259,7 @@
                     </div>
                   <?php elseif ($item['type'] === 'post-link'): ?>
                     <div class="post-link__wrapper">
-                      <a class="post-link__external" href="http://<?= $ite['content'] ?>" title="Перейти по ссылке">
+                      <a class="post-link__external" href="http://<?= $item['content'] ?>" title="Перейти по ссылке">
                           <div class="post-link__info-wrapper">
                               <div class="post-link__icon-wrapper">
                                   <img src="" alt="Иконка">
