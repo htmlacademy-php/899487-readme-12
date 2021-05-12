@@ -1,7 +1,9 @@
 <?php
   $is_auth = rand(0, 1);
 
-  $user_name = 'Sergei'; // укажите здесь ваше имя
+  $user_name = 'Sergei';
+
+  $maxDisplayedMessageLength = 300;
 
   $array = [
     [
@@ -40,6 +42,42 @@
       'avatar' => 'userpic.jpg',
     ],
   ];
+
+
+  function countCharacters ($message)
+  {
+    $wordsArr = explode(' ', $message);
+    $messageQuantity = 0;
+
+    for ($i = 0; $i < count($wordsArr); $i++)
+    {
+      $messageQuantity += strlen($wordsArr[$i]);
+    }
+
+    return $messageQuantity;
+  }
+
+
+  function trimMessage ($message)
+  {
+    $maxDisplayedMessageLength = 300;
+    $wordsArr = explode(' ', $message);
+    $trimmedWordsArr = [];
+    $messageQuantity = 0;
+
+    for ($i = 0; $i < count($wordsArr); $i++)
+    {
+      $messageQuantity += strlen($wordsArr[$i]);
+      if ($messageQuantity <= $maxDisplayedMessageLength)
+      {
+        array_push($trimmedWordsArr, $wordsArr[$i]);
+      }
+    }
+
+    $trimmedMessage = implode(' ', $trimmedWordsArr);
+
+    return "{$trimmedMessage}...";
+  }
 ?>
 
 <!DOCTYPE html>
@@ -252,7 +290,12 @@
                       <cite>Неизвестный Автор</cite>
                     </blockquote>
                   <?php elseif ($item['type'] === 'post-text'): ?>
-                    <p><?= $item['content'] ?></p>
+                    <?php if (countCharacters($item['content']) > $maxDisplayedMessageLength): ?>
+                      <p><?= trimMessage($item['content']); ?></p>
+                      <a class="post-text__more-link" href="#">Читать далее</a>
+                      <?php else: ?>
+                      <p><?= $item['content'] ?></p>
+                    <?php endif; ?>
                   <?php elseif ($item['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
                       <img src="img/<?= $item['content'] ?>" alt="Фото отпользователя" width="360" height="240">
