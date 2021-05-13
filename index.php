@@ -49,12 +49,13 @@
     $messageQuantity = 0;
     $readMoreButton = '<a class="post-text__more-link" href="#">Читать далее</a>';
 
-    for ($i = 0; $i < count($wordsArr); $i++)
-    {
-      $messageQuantity += strlen($wordsArr[$i]);
+    foreach ($wordsArr as $word) {
+      $messageQuantity += strlen($word);
       if ($messageQuantity <= $maxDisplayedMessageLength)
       {
-        array_push($trimmedWordsArr, $wordsArr[$i]);
+        array_push($trimmedWordsArr, $word);
+      } else {
+        break;
       }
     }
 
