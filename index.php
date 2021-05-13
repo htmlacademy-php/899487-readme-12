@@ -3,8 +3,6 @@
 
   $user_name = 'Sergei';
 
-  $maxDisplayedMessageLength = 300;
-
   $array = [
     [
       'title' => 'Цитата',
@@ -44,26 +42,12 @@
   ];
 
 
-  function countCharacters ($message)
+  function trimMessage ($message, $maxDisplayedMessageLength = 300)
   {
-    $wordsArr = explode(' ', $message);
-    $messageQuantity = 0;
-
-    for ($i = 0; $i < count($wordsArr); $i++)
-    {
-      $messageQuantity += strlen($wordsArr[$i]);
-    }
-
-    return $messageQuantity;
-  }
-
-
-  function trimMessage ($message)
-  {
-    $maxDisplayedMessageLength = 300;
     $wordsArr = explode(' ', $message);
     $trimmedWordsArr = [];
     $messageQuantity = 0;
+    $readMoreButton = '<a class="post-text__more-link" href="#">Читать далее</a>';
 
     for ($i = 0; $i < count($wordsArr); $i++)
     {
@@ -76,7 +60,7 @@
 
     $trimmedMessage = implode(' ', $trimmedWordsArr);
 
-    return "{$trimmedMessage}...";
+    return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...</p>{$readMoreButton}" : "<p>{$trimmedMessage}</p>";
   }
 ?>
 
@@ -290,12 +274,7 @@
                       <cite>Неизвестный Автор</cite>
                     </blockquote>
                   <?php elseif ($item['type'] === 'post-text'): ?>
-                    <?php if (countCharacters($item['content']) > $maxDisplayedMessageLength): ?>
-                      <p><?= trimMessage($item['content']); ?></p>
-                      <a class="post-text__more-link" href="#">Читать далее</a>
-                      <?php else: ?>
-                      <p><?= $item['content'] ?></p>
-                    <?php endif; ?>
+                    <?= trimMessage($item['content']); ?>
                   <?php elseif ($item['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
                       <img src="img/<?= $item['content'] ?>" alt="Фото отпользователя" width="360" height="240">
