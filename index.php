@@ -1,7 +1,7 @@
 <?php
   $is_auth = rand(0, 1);
 
-  $user_name = 'Sergei'; // укажите здесь ваше имя
+  $user_name = 'Sergei';
 
   $array = [
     [
@@ -40,6 +40,29 @@
       'avatar' => 'userpic.jpg',
     ],
   ];
+
+
+  function trimMessage ($message, $maxDisplayedMessageLength = 300)
+  {
+    $wordsArr = explode(' ', $message);
+    $trimmedWordsArr = [];
+    $messageQuantity = 0;
+    $readMoreButton = '<a class="post-text__more-link" href="#">Читать далее</a>';
+
+    foreach ($wordsArr as $word) {
+      $messageQuantity += strlen($word);
+      if ($messageQuantity <= $maxDisplayedMessageLength)
+      {
+        array_push($trimmedWordsArr, $word);
+      } else {
+        break;
+      }
+    }
+
+    $trimmedMessage = implode(' ', $trimmedWordsArr);
+
+    return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...</p>{$readMoreButton}" : "<p>{$trimmedMessage}</p>";
+  }
 ?>
 
 <!DOCTYPE html>
@@ -252,7 +275,7 @@
                       <cite>Неизвестный Автор</cite>
                     </blockquote>
                   <?php elseif ($item['type'] === 'post-text'): ?>
-                    <p><?= $item['content'] ?></p>
+                    <?= trimMessage($item['content']); ?>
                   <?php elseif ($item['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
                       <img src="img/<?= $item['content'] ?>" alt="Фото отпользователя" width="360" height="240">
