@@ -1,6 +1,6 @@
 <?php
   require('./helpers.php');
-  
+
   $is_auth = rand(0, 1);
 
   $user_name = 'Sergei';
@@ -65,8 +65,6 @@
 
     return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...</p>{$readMoreButton}" : "<p>{$trimmedMessage}</p>";
   }
-?>
 
+include_template('main.php', $array);
 
-
-include_template('layout.php', $array);
