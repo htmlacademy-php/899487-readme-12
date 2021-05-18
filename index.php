@@ -68,4 +68,4 @@
 
 include_template('main.php', $array);
 
-print_r('123');
+print_r('12345');
