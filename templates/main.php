@@ -115,7 +115,7 @@
                           <span><?= $item['content'] ?></span>
                       </a>
                     </div>
-                  <?php endif; ?>
+                  <?php endif ?>
                 </div>
               <footer class="post__footer">
                   <div class="post__author">
@@ -153,7 +153,7 @@
                   </div>
               </footer>
           </article>
-          <?php endforeach; ?>
+          <?php endforeach ?>
         </div>
     </div>
     

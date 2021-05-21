@@ -1,3 +1,6 @@
+
+<?php require_once('./index.php'); ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -62,7 +65,7 @@
                             </div>
                             <div class="header__profile-name">
                                 <span>
-                                    <?=$user_name;?>
+                                    <?= $user_name ?>
                                 </span>
                                 <svg class="header__link-arrow" width="10" height="6">
                                     <use xlink:href="#icon-arrow-right-ad"></use>
@@ -110,7 +113,10 @@
 </header>
 
 <section class="page__main page__main--popular">
-    <?= $pageContent ?>
+    <?php 
+      
+      echo include_template('./main.php', ['array' => $array]);
+    ?>
 </section>
 
 <footer class="footer">

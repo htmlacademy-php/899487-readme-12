@@ -1,5 +1,7 @@
 <?php
-  require('./helpers.php');
+  error_reporting(E_ALL);
+
+  require_once('./helpers.php');
 
   $is_auth = rand(0, 1);
 
@@ -66,6 +68,4 @@
     return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...</p>{$readMoreButton}" : "<p>{$trimmedMessage}</p>";
   }
 
-include_template('main.php', $array);
-
-print_r('12345');
+  echo include_template('layout.php', ['user_name' => $user_name, 'is_auth' => $is_auth, 'array'=> $array]);
