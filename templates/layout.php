@@ -1,6 +1,3 @@
-
-<?php require_once('./index.php'); ?>
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -113,10 +110,7 @@
 </header>
 
 <section class="page__main page__main--popular">
-    <?php 
-      
-      echo include_template('./main.php', ['array' => $array]);
-    ?>
+   <?= $content ?>
 </section>
 
 <footer class="footer">

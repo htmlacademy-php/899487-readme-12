@@ -1,8 +1,8 @@
 <?php
-  error_reporting(E_ALL);
-
   require_once('./helpers.php');
 
+  $title = 'readme: популярное';
+  
   $is_auth = rand(0, 1);
 
   $user_name = 'Sergei';
@@ -68,4 +68,6 @@
     return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...</p>{$readMoreButton}" : "<p>{$trimmedMessage}</p>";
   }
 
-  echo include_template('layout.php', ['user_name' => $user_name, 'is_auth' => $is_auth, 'array'=> $array]);
+  echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['array' => $array])]); 
+
+  
