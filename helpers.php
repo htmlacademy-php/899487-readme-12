@@ -263,16 +263,18 @@ function generate_random_date($index)
     return $dt;
 }
 
-const SECONDS_IN_MINUTE = 60;
-const MINUTES_IN_HOUR = 60;
-const HOURS_IN_DAY = 24;
-const DAYS_IN_WEEK = 7;
-const WEEKS_IN_MOUNTH = 4;
+date_default_timezone_set('Europe/Moscow');
 
-const SECONDS_IN_HOUR = 3600;
-const SECONDS_IN_DAY = 86400;
-const SECONDS_IN_WEEK = 604800;
-const SECONDS_IN_MONTH = 2628002;
+const SECOND = 1;
+const MINUTE = 60 * SECOND;
+const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
+const WEEK = 7 * DAY;
+
+function calcTime($amount, $one, $two, $many)
+{
+    return round($amount) . ' ' . get_noun_plural_form(round($amount), $one, $two, $many) . ' назад';
+}
 
 function getTimeToShow($postTime)
 {
@@ -280,26 +282,20 @@ function getTimeToShow($postTime)
     $currentTimestamp = strtotime(date('d.m.Y.H:i:s'));
     $timeDifference = $currentTimestamp - $postTimestamp;
 
-    $minutesDifference = $timeDifference / SECONDS_IN_MINUTE;
-    $hoursDifference = $timeDifference / SECONDS_IN_HOUR;
-    $daysDifference = $timeDifference / SECONDS_IN_DAY;
-    $weeksDifference = $timeDifference / SECONDS_IN_WEEK;
-    $mounthsDifference = $timeDifference / SECONDS_IN_MONTH;
-
     switch (true) {
-        case ($minutesDifference < MINUTES_IN_HOUR):
-            return round($minutesDifference) . ' ' . get_noun_plural_form(round($minutesDifference), 'минуту', 'минуты', 'минут') . ' назад';
+        case ($timeDifference < HOUR):
+            return calcTime($timeDifference / MINUTE, 'минуту', 'минуты', 'минут');
 
-        case ($minutesDifference >= MINUTES_IN_HOUR && $hoursDifference < HOURS_IN_DAY):
-            return round($hoursDifference) . ' ' . get_noun_plural_form(round($hoursDifference), 'час', 'часа', 'часов') . ' назад';
+        case ($timeDifference >= HOUR && $timeDifference < DAY):
+            return calcTime($timeDifference / HOUR, 'час', 'часа', 'часов');
 
-        case ($hoursDifference >= HOURS_IN_DAY && $daysDifference < DAYS_IN_WEEK):
-            return round($daysDifference) . ' ' . get_noun_plural_form(round($daysDifference), 'день', 'дня', 'дней') . ' назад';
+        case ($timeDifference >= DAY && $timeDifference < WEEK):
+            return calcTime($timeDifference / DAY, 'день', 'дня', 'дней');
 
-        case ($daysDifference >= DAYS_IN_WEEK && $weeksDifference <= WEEKS_IN_MOUNTH):
-            return round($weeksDifference) . ' ' . get_noun_plural_form(round($weeksDifference), 'неделя', 'недели', 'недель') . ' назад';
+        case ($timeDifference >= WEEK && $timeDifference <= 4 * WEEK):
+            return calcTime($timeDifference / WEEK, 'неделю', 'недели', 'недель');
 
-        case ($weeksDifference > WEEKS_IN_MOUNTH):
-            return round($mounthsDifference) . ' ' . get_noun_plural_form(ceil($mounthsDifference), 'месяц', 'месяца', 'месяцев') . ' назад';
+        case ($timeDifference > 4 * WEEK):
+            return calcTime($timeDifference / WEEK, 'месяц', 'месяца', 'месяцев');
     }
 }

@@ -127,7 +127,7 @@
                           <div class="post__info">
                               <b class="post__author-name"><?= $item['username'] ?></b>
                               <?php $postTime = generate_random_date($postIndex); ?>
-                              <time class="post__time" datetime="<?= $postTime ?>" title="<?= date('d-m-Y H:i') ?>"><?= getTimeToShow($postTime) ?></time>
+                              <time class="post__time" datetime="<?= $postTime ?>" title="<?= date('d-m-Y H:i', strtotime($postTime)) ?>"><?= getTimeToShow($postTime) ?></time>
                           </div>
                       </a>
                   </div>
