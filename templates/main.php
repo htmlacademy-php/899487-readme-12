@@ -1,5 +1,3 @@
-<?php include_once('./helpers.php') ?>
-
 <div class="container">
         <h1 class="page__title page__title--popular">Популярное</h1>
     </div>
@@ -128,54 +126,8 @@
                           </div>
                           <div class="post__info">
                               <b class="post__author-name"><?= $item['username'] ?></b>
-                              <?php
-                                $postTime = generate_random_date($postIndex);
-                                $postTimestamp = strtotime($postTime);
-                                $currentTimestamp = strtotime(date('d.m.Y.H:i:s'));
-                                $timeDifference = $currentTimestamp - $postTimestamp;
-
-                                $secondsInMinute = 60;
-                                $minutesInHour = 60;
-                                $hoursInDay = 24;
-                                $daysInWeek = 7;
-                                $weeksInMounth = 4;
-
-                                $secondsInHour = 3600;
-                                $secondsInDay = 86400;
-                                $secondsInWeek = 604800;
-                                $secondsInMounth = 2628002;
-
-                                $minutesDifference = $timeDifference / $secondsInMinute;
-                                $hoursDifference = $timeDifference / $secondsInHour;
-                                $daysDifference = $timeDifference / $secondsInDay;
-                                $weeksDifference = $timeDifference / $secondsInWeek;
-                                $mounthsDifference = $timeDifference / $secondsInMounth;
-
-                                $timeToShow;
-
-                                if ($minutesDifference < $minutesInHour) {
-                                    $timeToShow = round($minutesDifference) . ' ' . get_noun_plural_form(round($minutesDifference), 'минуту', 'минуты', 'минут') . ' назад';
-                                }
-
-                                if ($minutesDifference >= $minutesInHour && $hoursDifference < $hoursInDay) {
-                                        $timeToShow = round($hoursDifference) . ' ' . get_noun_plural_form(round($hoursDifference), 'час', 'часа', 'часов') . ' назад';
-                                }
-
-                                if ($hoursDifference >= $hoursInDay && $daysDifference < $daysInWeek) {
-                                        $timeToShow = round($daysDifference) . ' ' . get_noun_plural_form(round($daysDifference), 'день', 'дня', 'дней') . ' назад';
-                                }
-
-                                if ($daysDifference >= $daysInWeek && $weeksDifference <= $weeksInMounth) {
-                                        $timeToShow = round($weeksDifference) . ' ' . get_noun_plural_form(round($weeksDifference), 'неделя', 'недели', 'недель') . ' назад';
-                                }
-
-                                if ($weeksDifference > $weeksInMounth) {
-                                    $timeToShow = round($mounthsDifference) . ' ' . get_noun_plural_form(ceil($mounthsDifference), 'месяц', 'месяца', 'месяцев') . ' назад';
-                                }
-                              ?>
-                              <time class="post__time" datetime="<?= $postTime ?>" title="<?= date('d-m-Y H:i') ?>">
-                                <?= $timeToShow ?>
-                              </time>
+                              <?php $postTime = generate_random_date($postIndex); ?>
+                              <time class="post__time" datetime="<?= $postTime ?>" title="<?= date('d-m-Y H:i') ?>"><?= getTimeToShow($postTime) ?></time>
                           </div>
                       </a>
                   </div>
