@@ -130,7 +130,7 @@
                                   $postTime = generate_random_date($postIndex);
                                   $postTimestamp = strtotime($postTime); 
                               ?>
-                              <time class="post__time" datetime="<?= $postTime ?>" title="<?= date('d-m-Y H:i', $postTimeStamp) ?>"><?= getTimeToShow($postTimestamp) ?></time>
+                              <time class="post__time" datetime="<?= $postTime ?>" title="<?= date('d-m-Y H:i', $postTimestamp) ?>"><?= getTimeToShow($postTimestamp) ?></time>
                           </div>
                       </a>
                   </div>
