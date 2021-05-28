@@ -262,3 +262,40 @@ function generate_random_date($index)
 
     return $dt;
 }
+
+date_default_timezone_set('Europe/Moscow');
+
+const SECOND = 1;
+const MINUTE = 60 * SECOND;
+const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
+const WEEK = 7 * DAY;
+
+function formatRelativeTime($amount, $one, $two, $many)
+{
+    $amount = round($amount);
+    return $amount . ' ' . get_noun_plural_form($amount, $one, $two, $many) . ' назад';
+}
+
+function getTimeToShow($postTimestamp)
+{
+    $currentTimestamp = strtotime(date('d.m.Y.H:i:s'));
+    $timeDifference = $currentTimestamp - $postTimestamp;
+
+    switch (true) {
+        case ($timeDifference < HOUR):
+            return formatRelativeTime($timeDifference / MINUTE, 'минуту', 'минуты', 'минут');
+
+        case ($timeDifference >= HOUR && $timeDifference < DAY):
+            return formatRelativeTime($timeDifference / HOUR, 'час', 'часа', 'часов');
+
+        case ($timeDifference >= DAY && $timeDifference < WEEK):
+            return formatRelativeTime($timeDifference / DAY, 'день', 'дня', 'дней');
+
+        case ($timeDifference >= WEEK && $timeDifference < 5 * WEEK):
+            return formatRelativeTime($timeDifference / WEEK, 'неделю', 'недели', 'недель');
+
+        case ($timeDifference >= 5 * WEEK):
+            return formatRelativeTime($timeDifference / WEEK, 'месяц', 'месяца', 'месяцев');
+    }
+}
