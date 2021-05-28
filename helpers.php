@@ -271,31 +271,31 @@ const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 const WEEK = 7 * DAY;
 
-function calcTime($amount, $one, $two, $many)
+function formatRelativeTime($amount, $one, $two, $many)
 {
-    return round($amount) . ' ' . get_noun_plural_form(round($amount), $one, $two, $many) . ' назад';
+    $amount = round($amount);
+    return $amount . ' ' . get_noun_plural_form($amount, $one, $two, $many) . ' назад';
 }
 
-function getTimeToShow($postTime)
+function getTimeToShow($postTimestamp)
 {
-    $postTimestamp = strtotime($postTime);
     $currentTimestamp = strtotime(date('d.m.Y.H:i:s'));
     $timeDifference = $currentTimestamp - $postTimestamp;
 
     switch (true) {
         case ($timeDifference < HOUR):
-            return calcTime($timeDifference / MINUTE, 'минуту', 'минуты', 'минут');
+            return formatRelativeTime($timeDifference / MINUTE, 'минуту', 'минуты', 'минут');
 
         case ($timeDifference >= HOUR && $timeDifference < DAY):
-            return calcTime($timeDifference / HOUR, 'час', 'часа', 'часов');
+            return formatRelativeTime($timeDifference / HOUR, 'час', 'часа', 'часов');
 
         case ($timeDifference >= DAY && $timeDifference < WEEK):
-            return calcTime($timeDifference / DAY, 'день', 'дня', 'дней');
+            return formatRelativeTime($timeDifference / DAY, 'день', 'дня', 'дней');
 
-        case ($timeDifference >= WEEK && $timeDifference <= 4 * WEEK):
-            return calcTime($timeDifference / WEEK, 'неделю', 'недели', 'недель');
+        case ($timeDifference >= WEEK && $timeDifference < 5 * WEEK):
+            return formatRelativeTime($timeDifference / WEEK, 'неделю', 'недели', 'недель');
 
-        case ($timeDifference > 4 * WEEK):
-            return calcTime($timeDifference / WEEK, 'месяц', 'месяца', 'месяцев');
+        case ($timeDifference >= 5 * WEEK):
+            return formatRelativeTime($timeDifference / WEEK, 'месяц', 'месяца', 'месяцев');
     }
 }
