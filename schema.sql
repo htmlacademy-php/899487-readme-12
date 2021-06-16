@@ -2,21 +2,20 @@ CREATE DATABASE IF NOT EXISTS readme;
 
 USE readme;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  registration_date DATETIME,
-  email VARCHAR(2048),
-  login VARCHAR(2048),
-  password BINARY(32),
-  avatar VARCHAR(2048),
-  CONSTRAINT nn_user NOT NULL (registration_date, email, login, password)
+  registration_date DATETIME NOT NULL,
+  email VARCHAR(2048) NOT NULL,
+  login VARCHAR(2048) NOT NULL,
+  password BINARY(32) NOT NULL,
+  avatar VARCHAR(2048)
 );
 
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS posts (
   id INT PRIMARY KEY AUTO_INCREMENT,
-	date DATETIME,
-	title VARCHAR(2048),
-	content TEXT,
+	date DATETIME NOT NULL,
+	title VARCHAR(2048) NOT NULL,
+	content TEXT NOT NULL,
 	quote_author VARCHAR(2048),
 	image VARCHAR(2048),
 	video VARCHAR(2048),
@@ -27,22 +26,20 @@ CREATE TABLE posts (
   hashtag VARCHAR(2048),
   FOREIGN KEY (author_id) REFERENCES users(id),
   FOREIGN KEY (content_type) REFERENCES content_types(content_type),
-  FOREIGN KEY (hashtag) REFERENCES hashtags(hashtag),
-  CONSTRAINT nn_post NOT NULL (date, title, content)
+  FOREIGN KEY (hashtag) REFERENCES hashtags(hashtag)
 );
 
-CREATE TABLE comemnts (
+CREATE TABLE IF NOT EXISTS comemnts (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  date DATETIME,
-  content TEXT,
+  date DATETIME NOT NULL,
+  content TEXT NOT NULL,
   user_id INT,
   post_id INT,
   FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (post_id) REFERENCES posts(id),
-  CONSTRAINT nn_comment NOT NULL (date, content)
+  FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-CREATE TABLE likes (
+CREATE TABLE IF NOT EXISTS likes (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   post_id INT,
@@ -50,39 +47,36 @@ CREATE TABLE likes (
   FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-CREATE TABLE subscribers (
+CREATE TABLE IF NOT EXISTS subscribers (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  author_id INT,
-  subscriber_id INT,
+  author_id INT NOT NULL,
+  subscriber_id INT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES users(id),
-  FOREIGN KEY (subscriber_id) REFERENCES user(id),
-  CONSTRAINT nn_subscriber NOT NULL (author_id, subscriber_id)
+  FOREIGN KEY (subscriber_id) REFERENCES user(id)
 );
 
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  date DATETIME,
-  content TEXT,
+  date DATETIME NOT NULL,
+  content TEXT NOT NULL,
   author_id INT,
   recipient_id INT,
   FOREIGN KEY (author_id) REFERENCES users(id),
-  FOREIGN KEY (recipient_id) REFERENCES users(id),
-  CONSTRAINT nn_message NOT NULL (date, content)
+  FOREIGN KEY (recipient_id) REFERENCES users(id)
 );
 
-CREATE TABLE hashtags (
+CREATE TABLE IF NOT EXISTS hashtags (
   id INT PRIMARY KEY AUTO_INCREMENT,
   hashtag VARCHAR(2048) NOT NULL
 );
 
-CREATE TABLE content_types (
+CREATE TABLE IF NOT EXISTS content_types (
   id INT PRIMARY KEY AUTO_INCREMENT,
-	content_type VARCHAR(2048),
-	icon_classname VARCHAR(2048),
-  CONSTRAINT nn_content_type NOT NULL (name, icon_classname)
+	content_type VARCHAR(2048) NOT NULL,
+	icon_classname VARCHAR(2048) NOT NULL
 );
 
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(2048) NOT NULL
 );
