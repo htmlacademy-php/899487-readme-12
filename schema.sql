@@ -1,9 +1,13 @@
+CREATE DATABASE IF NOT EXISTS readme;
+
+USE readme;
+
 CREATE TABLE IF NOT EXISTS users
 (
  id                INT PRIMARY KEY AUTO_INCREMENT,
  registration_date DATETIME     NOT NULL,
- email             VARCHAR(2048) NOT NULL,
- login             VARCHAR(2048) NOT NULL,
+ email             VARCHAR(255) NOT NULL,
+ login             VARCHAR(255) NOT NULL,
  password          BINARY(32)   NOT NULL,
  avatar            VARCHAR(2048)
 );
@@ -11,30 +15,31 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS content_types
 (
  id             INT PRIMARY KEY AUTO_INCREMENT,
- icon_classname VARCHAR(2048) NOT NULL
+ content_name   VARCHAR(64) NOT NULL,
+ icon_classname VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS posts
 (
  id           INT PRIMARY KEY AUTO_INCREMENT,
- date         DATETIME     NOT NULL,
+ created_at         DATETIME     NOT NULL,
  title        VARCHAR(2048) NOT NULL,
  content      TEXT         NOT NULL,
- quote_author VARCHAR(2048),
+ quote_author VARCHAR(255),
  image        VARCHAR(2048),
  video        VARCHAR(2048),
  link         VARCHAR(2048),
  views        INT,
  author_id    INT,
- content_type INT,
+ content_type_id INT,
  FOREIGN KEY (author_id) REFERENCES users (id),
- FOREIGN KEY (content_type) REFERENCES content_types (id)
+ FOREIGN KEY (content_type_id) REFERENCES content_types (id)
 );
 
 CREATE TABLE IF NOT EXISTS hashtags
 (
  id      INT PRIMARY KEY AUTO_INCREMENT,
- hashtag VARCHAR(2048) NOT NULL
+ name    VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS posts_hashtags
@@ -48,7 +53,7 @@ CREATE TABLE IF NOT EXISTS posts_hashtags
 CREATE TABLE IF NOT EXISTS comments
 (
  id      INT PRIMARY KEY AUTO_INCREMENT,
- date    DATETIME NOT NULL,
+ created_at    DATETIME NOT NULL,
  content TEXT     NOT NULL,
  user_id INT,
  post_id INT,
@@ -77,7 +82,7 @@ CREATE TABLE IF NOT EXISTS subscribers
 CREATE TABLE IF NOT EXISTS messages
 (
  id           INT PRIMARY KEY AUTO_INCREMENT,
- date         DATETIME NOT NULL,
+ created_at         DATETIME NOT NULL,
  content      TEXT     NOT NULL,
  author_id    INT,
  recipient_id INT,
@@ -88,5 +93,5 @@ CREATE TABLE IF NOT EXISTS messages
 CREATE TABLE IF NOT EXISTS roles
 (
  id   INT PRIMARY KEY AUTO_INCREMENT,
- name VARCHAR(2048) NOT NULL
+ name VARCHAR(255) NOT NULL
 );
