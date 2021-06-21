@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS readme;
+CREATE DATABASE readme CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 USE readme;
 

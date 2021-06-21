@@ -21,20 +21,21 @@ INSERT INTO posts (id, created_at, title, content, quote_author, image, video, l
 /* Добавляем данные в таблицу comments */
 INSERT INTO comments (id, created_at, content, user_id, post_id) VALUES
 (1, '2021-06-17 12:15:00', 'Замечательные слова!', 2, 1),
-(2, '2021-06-16 10:15:25', 'Очень красиво!', 2, 1),
-(3, '2021-06-17 17:29:11', 'Согласен! Я тоже прохожу их :)', 1, 3);
+(2, '2021-06-16 10:15:25', 'Очень красиво!', 2, 2),
+(3, '2021-06-17 17:29:11', 'Согласен! Я тоже прохожу их :)', 1, 3),
+(4, '2021-06-18 15:10:44', 'Отличные снимки!', 3, 2);
 
 /* Объединяем таблицы posts, users, content_types и выбираем все поля из posts, login из users, name из content_types и сортируем полученные данные по views из posts */
-SELECT posts.*, login, name FROM posts JOIN users ON author_id = users.id JOIN content_types ON posts.content_type_id = content_types.id ORDER BY posts.views;
+SELECT posts.*, login, name FROM posts JOIN users ON posts.author_id = users.id JOIN content_types ON posts.content_type_id = content_types.id ORDER BY posts.views;
 
 /* Объединям таблицы posts и users и выбираем все поля из posts, login из users, где login = vladik */
 SELECT posts.* FROM posts JOIN users ON posts.author_id = users.id WHERE users.login = 'vladik';
 
 /* Объединям таблицы comments и users и выбираем поля content из comments и login из users, где comment.id = 1 */
-SELECT content, login FROM comments JOIN users ON comments.user_id = users.id WHERE comments.id = 1;
+SELECT content, login FROM comments JOIN users ON comments.user_id = users.id WHERE comments.post_id = 2;
 
 /* viktor ставит like посту vladik */
-INSERT INTO likes VALUES (1, 1, 3);
+INSERT INTO likes (id, user_id, post_id) VALUES (1, 1, 3);
 
 /* larisa подписывается на viktor */
-INSERT INTO subscribers VALUES (1, 1, 2);
+INSERT INTO subscribers (id, author_id, subscriber_id) VALUES (1, 1, 2);
