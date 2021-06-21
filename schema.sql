@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS content_types
 (
     id             INT PRIMARY KEY AUTO_INCREMENT,
-    content_type_name   VARCHAR(64) NOT NULL,
-    icon_class_name VARCHAR(64) NOT NULL
+    name   VARCHAR(64) NOT NULL,
+    icon_class VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS posts
