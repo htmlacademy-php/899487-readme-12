@@ -67,4 +67,17 @@ $trimmedMessage = implode(' ', $trimmedWordsArr);
 return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...</p>{$readMoreButton}" : "<p>{$trimmedMessage}</p>";
 }
 
-echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['array' => $array])]); 
+
+$con = mysqli_connect('127.0.0.1', 'mysql', 'mysql', 'readme');
+
+$contentTypesQuery = "SELECT * FROM content_types";
+$postsQuery = "SELECT posts.*, login, avatar, type_name FROM posts JOIN users ON posts.author_id = users.id JOIN content_types ON posts.content_type_id = content_types.id ORDER BY posts.views";
+
+$contentTypesRows = mysqli_query($con, $contentTypesQuery);
+$contentTypes = mysqli_fetch_all($contentTypesRows, MYSQLI_ASSOC);
+
+$postsRows = mysqli_query($con, $postsQuery);
+$posts = mysqli_fetch_all($postsRows, MYSQLI_ASSOC);
+
+
+echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['posts' => $posts, 'contentTypes' => $contentTypes])]);
