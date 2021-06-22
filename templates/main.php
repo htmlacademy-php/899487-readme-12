@@ -43,7 +43,7 @@
                     <?php foreach ($contentTypes as $contentType): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--photo button" href="#">
-                            <span class="visually-hidden"><?= $contentType['type_name'] ?></span>
+                            <span class="visually-hidden"><?= $contentType['icon_class'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $contentType['icon_class'] ?>"></use>
                             </svg>
@@ -60,18 +60,18 @@
                 <h2><?= $post['title'] ?></h2>
               </header>
                 <div class="post__main">
-                  <?php if ($post['type_name'] === 'Цитата'): ?>
+                  <?php if ($post['icon_class'] === 'quote'): ?>
                     <blockquote>
                       <p><?= $post['content'] ?></p>
                       <cite>Неизвестный Автор</cite>
                     </blockquote>
-                  <?php elseif ($post['type_name'] === 'Текст'): ?>
+                  <?php elseif ($post['icon_class'] === 'text'): ?>
                     <?= trimMessage($post['content']); ?>
-                  <?php elseif ($post['type_name'] === 'Картинка'): ?>
+                  <?php elseif ($post['icon_class'] === 'photo'): ?>
                     <div class="post-photo__image-wrapper">
                       <img src="img/<?= $post['image'] ?>" alt="Фото от пользователя" width="360" height="240">
                     </div>
-                  <?php elseif ($post['type_name'] === 'Ссылка'): ?>
+                  <?php elseif ($post['icon_class'] === 'link'): ?>
                     <div class="post-link__wrapper">
                       <a class="post-link__external" href="http://<?= $post['link'] ?>" title="Перейти по ссылке">
                           <div class="post-link__info-wrapper">

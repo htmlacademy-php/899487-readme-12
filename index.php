@@ -70,14 +70,25 @@ return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...<
 
 $con = mysqli_connect('127.0.0.1', 'mysql', 'mysql', 'readme');
 
-$contentTypesQuery = "SELECT * FROM content_types";
-$postsQuery = "SELECT posts.*, login, avatar, type_name FROM posts JOIN users ON posts.author_id = users.id JOIN content_types ON posts.content_type_id = content_types.id ORDER BY posts.views";
+function getDataFromDatabase($con, $query)
+{
+    $rows = mysqli_query($con, $query);
+    return mysqli_fetch_all($rows, MYSQLI_ASSOC);
+}
 
-$contentTypesRows = mysqli_query($con, $contentTypesQuery);
-$contentTypes = mysqli_fetch_all($contentTypesRows, MYSQLI_ASSOC);
+$contentTypes = getDataFromDatabase($con, "SELECT * FROM content_types");
+$posts = getDataFromDatabase($con, "
+    SELECT
+        posts.*, 
+        users.login, 
+        users.avatar, 
+        content_types.icon_class 
+    FROM posts 
+    JOIN users ON posts.author_id = users.id 
+    JOIN content_types ON posts.content_type_id = content_types.id 
+    ORDER BY posts.views 
+    LIMIT 6
+");
 
-$postsRows = mysqli_query($con, $postsQuery);
-$posts = mysqli_fetch_all($postsRows, MYSQLI_ASSOC);
 
-
-echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['posts' => $posts, 'contentTypes' => $contentTypes])]);
+echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['contentTypes' => $contentTypes, 'posts' => $posts])]);

@@ -1,5 +1,5 @@
 /* Добавляем данные в таблицу content_types */
-INSERT INTO content_types (id, type_name, icon_class) VALUES
+INSERT INTO content_types (id, name, icon_class) VALUES
 (1, 'Текст', 'text'),
 (2, 'Цитата', 'quote'),
 (3, 'Картинка', 'photo'),
@@ -26,13 +26,13 @@ INSERT INTO comments (id, created_at, content, user_id, post_id) VALUES
 (4, '2021-06-18 15:10:44', 'Отличные снимки!', 3, 2);
 
 /* Объединяем таблицы posts, users, content_types и выбираем все поля из posts, login из users, type_name из content_types и сортируем полученные данные по views из posts */
-SELECT posts.*, login, type_name FROM posts JOIN users ON posts.author_id = users.id JOIN content_types ON posts.content_type_id = content_types.id ORDER BY posts.views;
+SELECT posts.*, users.login, content_types.name FROM posts JOIN users ON posts.author_id = users.id JOIN content_types ON posts.content_type_id = content_types.id ORDER BY posts.views;
 
 /* Объединям таблицы posts и users и выбираем все поля из posts, login из users, где login = Владик */
 SELECT posts.* FROM posts JOIN users ON posts.author_id = users.id WHERE users.login = 'Владик';
 
 /* Объединям таблицы comments и users и выбираем поля content из comments и login из users, где comment.id = 1 */
-SELECT content, login FROM comments JOIN users ON comments.user_id = users.id WHERE comments.post_id = 2;
+SELECT comments.content, users.login FROM comments JOIN users ON comments.user_id = users.id WHERE comments.post_id = 2;
 
 /* Виктор ставит like посту Владик */
 INSERT INTO likes (id, user_id, post_id) VALUES (1, 1, 3);
