@@ -81,14 +81,17 @@ $posts = getDataFromDatabase($con, "
     SELECT
         posts.*, 
         users.login, 
-        users.avatar, 
-        content_types.icon_class 
+        users.avatar,
+        content_types.name,
+        content_types.icon_class,
+        COUNT(likes.id) AS likes_amount
     FROM posts 
     JOIN users ON posts.author_id = users.id 
-    JOIN content_types ON posts.content_type_id = content_types.id 
-    ORDER BY posts.views 
+    JOIN content_types ON posts.content_type_id = content_types.id
+    LEFT OUTER JOIN likes ON likes.post_id = posts.id 
+    GROUP BY posts.id
+    ORDER BY likes_amount DESC
     LIMIT 6
 ");
-
 
 echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['contentTypes' => $contentTypes, 'posts' => $posts])]);

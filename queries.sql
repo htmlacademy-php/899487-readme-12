@@ -35,7 +35,7 @@ SELECT posts.* FROM posts JOIN users ON posts.author_id = users.id WHERE users.l
 SELECT comments.content, users.login FROM comments JOIN users ON comments.user_id = users.id WHERE comments.post_id = 2;
 
 /* Виктор ставит like посту Владик */
-INSERT INTO likes (id, user_id, post_id) VALUES (1, 1, 3);
+INSERT INTO likes (id, user_id, post_id) VALUES (1, 1, 3), (2, 2, 3), (3, 3, 1); 
 
 /* Лариса подписывается на Виктор */
 INSERT INTO subscribers (id, author_id, subscriber_id) VALUES (1, 1, 2);

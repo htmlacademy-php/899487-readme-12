@@ -43,7 +43,7 @@
                     <?php foreach ($contentTypes as $contentType): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--photo button" href="#">
-                            <span class="visually-hidden"><?= $contentType['icon_class'] ?></span>
+                            <span class="visually-hidden"><?= $contentType['name'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $contentType['icon_class'] ?>"></use>
                             </svg>
