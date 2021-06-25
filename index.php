@@ -7,44 +7,6 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Sergei';
 
-$array = [
-    [
-        'title' => 'Цитата',
-        'type' => 'post-quote',
-        'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-        'username' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg',
-    ],
-    [
-        'title' => 'Игра престолов',
-        'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
-        'username' => 'Владик',
-        'avatar' => 'userpic.jpg',
-    ],
-    [
-        'title' => 'Наконец, обработал фотки!',
-        'type' => 'post-photo',
-        'content' => 'rock-medium.jpg',
-        'username' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg',
-    ],
-    [
-        'title' => 'Моя мечта',
-        'type' => 'post-photo',
-        'content' => 'coast-medium.jpg',
-        'username' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg',
-    ],
-    [
-        'title' => 'Лучшие курсы',
-        'type' => 'post-link',
-        'content' => 'www.htmlacademy.ru',
-        'username' => 'Владик',
-        'avatar' => 'userpic.jpg',
-    ],
-];
-
 
 function trimMessage ($message, $maxDisplayedMessageLength = 300)
 {
@@ -70,9 +32,23 @@ return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...<
 
 $con = mysqli_connect('127.0.0.1', 'mysql', 'mysql', 'readme');
 
+if (!$con) {
+    echo 'Ошибка соединения: ' . mysqli_connect_error() . '<br>';
+    echo 'Код ошибки: ' . mysqli_connect_errno();
+    exit();
+}
+
+mysqli_set_charset($con, "utf8");
+
 function getDataFromDatabase($con, $query)
 {
     $rows = mysqli_query($con, $query);
+
+    if (!$rows) {
+        printf("Код ошибки: %d\n", mysqli_errno($con));
+        exit();
+    }
+
     return mysqli_fetch_all($rows, MYSQLI_ASSOC);
 }
 
@@ -93,5 +69,6 @@ $posts = getDataFromDatabase($con, "
     ORDER BY likes_amount DESC
     LIMIT 6
 ");
+
 
 echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['contentTypes' => $contentTypes, 'posts' => $posts])]);
