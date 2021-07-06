@@ -33,8 +33,8 @@ return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...<
 $con = mysqli_connect('127.0.0.1', 'mysql', 'mysql', 'readme');
 
 if (!$con) {
-    echo 'Ошибка соединения: ' . mysqli_connect_error() . '<br>';
-    echo 'Код ошибки: ' . mysqli_connect_errno();
+    printf('Ошибка соединения: ' . mysqli_connect_error() . '<br>');
+    printf('Код ошибки: ' . mysqli_connect_errno());
     exit();
 }
 
