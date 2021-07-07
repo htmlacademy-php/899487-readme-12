@@ -38,17 +38,18 @@ if (!$con) {
     exit();
 }
 
-mysqli_set_charset($con, "utf8");
+if (!mysqli_set_charset($con, "utf8")) {
+    printf("Ошибка при загрузке набора символов utf8: %s\n", mysqli_error($con));
+    exit();
+}
 
 function getDataFromDatabase($con, $query)
 {
     $rows = mysqli_query($con, $query);
-
     if (!$rows) {
         printf("Код ошибки: %d\n", mysqli_errno($con));
         exit();
     }
-
     return mysqli_fetch_all($rows, MYSQLI_ASSOC);
 }
 
