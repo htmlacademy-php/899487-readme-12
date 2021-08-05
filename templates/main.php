@@ -34,6 +34,7 @@
             </div>
             <div class="popular__filters filters">
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
+                <?php $contentId = $_GET['id'] !== null ? $_GET['id'] : null ?>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                         <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="#">
@@ -42,7 +43,7 @@
                     </li>
                     <?php foreach ($contentTypes as $contentType): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button" href="#">
+                        <a class="filters__button filters__button--<?= $contentType['icon_class'] ?> button <?php echo $_GET['id'] === $contentType['id'] ? 'filters__button--active' : ''; ?>" href="/?id=<?= $contentType['id'] ?>">
                             <span class="visually-hidden"><?= $contentType['name'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $contentType['icon_class'] ?>"></use>

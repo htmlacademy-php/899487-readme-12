@@ -53,7 +53,10 @@ function getDataFromDatabase($con, $query)
     return mysqli_fetch_all($rows, MYSQLI_ASSOC);
 }
 
+
 $contentTypes = getDataFromDatabase($con, "SELECT * FROM content_types");
+$getId = $_GET['id'];
+
 $posts = getDataFromDatabase($con, "
     SELECT
         posts.*, 
@@ -66,9 +69,10 @@ $posts = getDataFromDatabase($con, "
     JOIN users ON posts.author_id = users.id 
     JOIN content_types ON posts.content_type_id = content_types.id
     LEFT OUTER JOIN likes ON likes.post_id = posts.id 
+    WHERE content_types.id = {$getId}
     GROUP BY posts.id
-    ORDER BY likes_amount DESC
-    LIMIT 6
+    ORDER BY likes_amount DESC  
+    LIMIT 6 
 ");
 
 
