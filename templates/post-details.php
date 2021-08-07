@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>readme: публикация</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body class="page">
 <div style="display: none">
@@ -15,8 +15,8 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="main.html">
-                <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
+            <a class="header__logo-link" href="../main.html">
+                <img class="header__logo" src="../img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
                 micro blogging
@@ -43,12 +43,12 @@
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
-                        <a class="header__page-link" href="feed.html" title="Моя лента">
+                        <a class="header__page-link" href="../feed.html" title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--messages">
-                        <a class="header__page-link" href="messages.html" title="Личные сообщения">
+                        <a class="header__page-link" href="../messages.html" title="Личные сообщения">
                             <span class="visually-hidden">Личные сообщения</span>
                         </a>
                     </li>
@@ -57,7 +57,7 @@
                     <li class="header__profile">
                         <a class="header__profile-link" href="#">
                             <div class="header__avatar-wrapper">
-                                <img class="header__profile-avatar" src="img/userpic-medium.jpg" alt="Аватар профиля">
+                                <img class="header__profile-avatar" src="../img/userpic-medium.jpg" alt="Аватар профиля">
                             </div>
                             <div class="header__profile-name">
                                 <span>Антон Глуханько</span>
@@ -96,7 +96,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="header__post-button button button--transparent" href="adding-post.html">Пост</a>
+                        <a class="header__post-button button button--transparent" href="../adding-post.html">Пост</a>
                     </li>
                 </ul>
             </nav>
@@ -106,14 +106,27 @@
 
 <main class="page__main page__main--publication">
     <div class="container">
-        <h1 class="page__title page__title--publication">Наконец, обработала фотки!</h1>
+        <?php $post = $post[0] ?>
+        <h1 class="page__title page__title--publication">
+            <?php echo $post['title'] ?>
+        </h1>
         <section class="post-details">
             <h2 class="visually-hidden">Публикация</h2>
-            <div class="post-details__wrapper post-photo">
+            <div class="post-details__wrapper post-<?= $post['icon_class'] ?>">
                 <div class="post-details__main-block post post--details">
-                    <div class="post-details__image-wrapper post-photo__image-wrapper">
-                        <img src="img/rock-default.jpg" alt="Фото от пользователя" width="760" height="507">
-                    </div>
+                <?php
+                    if ($post['icon_class'] === 'text') {
+                        echo include_template('post-text.php', ['text' => $post['content']]);
+                    } elseif ($post['icon_class'] === 'quote') {
+                        echo include_template('post-quote.php', ['text' => $post['content'], 'author' => $post['quote_author']]);
+                    } elseif ($post['icon_class'] === 'photo') {
+                        echo include_template('post-photo.php', ['img_url' => '../img/' . $post['image']]);
+                    } elseif ($post['icon_class'] === 'video') {
+                        echo include_template('post-video.php', ['video' => $post['video']]);
+                    } elseif ($post['icon_class'] === 'link') {
+                        echo include_template('post-link.php', ['url' => $post['link'], 'title' => $post['title']]);
+                    }
+                    ?>
                     <div class="post__indicators">
                         <div class="post__buttons">
                             <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
@@ -123,38 +136,39 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span>250</span>
+                                <span><?= count($postLikes) ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span>25</span>
+                                <span><?= count($postComments) ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                             <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-repost"></use>
                                 </svg>
-                                <span>5</span>
+                                <span>--</span>
                                 <span class="visually-hidden">количество репостов</span>
                             </a>
                         </div>
-                        <span class="post__view">500 просмотров</span>
+                        <span class="post__view"><?= $post['views'] ?></span>
                     </div>
                     <ul class="post__tags">
-                        <li><a href="#">#nature</a></li>
-                        <li><a href="#">#globe</a></li>
-                        <li><a href="#">#photooftheday</a></li>
-                        <li><a href="#">#canon</a></li>
-                        <li><a href="#">#landscape</a></li>
-                        <li><a href="#">#щикарныйвид</a></li>
+                        -- hashtags --
+<!--                        <li><a href="#">#nature</a></li>-->
+<!--                        <li><a href="#">#globe</a></li>-->
+<!--                        <li><a href="#">#photooftheday</a></li>-->
+<!--                        <li><a href="#">#canon</a></li>-->
+<!--                        <li><a href="#">#landscape</a></li>-->
+<!--                        <li><a href="#">#щикарныйвид</a></li>-->
                     </ul>
                     <div class="comments">
                         <form class="comments__form form" action="#" method="post">
                             <div class="comments__my-avatar">
-                                <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
+                                <img class="comments__picture" src="../img/userpic-medium.jpg" alt="Аватар пользователя">
                             </div>
                             <div class="form__input-section form__input-section--error">
                                 <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
@@ -169,46 +183,51 @@
                         </form>
                         <div class="comments__list-wrapper">
                             <ul class="comments__list">
+                                <?php foreach ($postComments as $postComment) : ?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
                                         <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
+                                            <img class="comments__picture" src="../img/<?= $postComment['avatar'] ?>" alt="Аватар пользователя">
                                         </a>
                                     </div>
                                     <div class="comments__info">
                                         <div class="comments__name-wrapper">
                                             <a class="comments__user-name" href="#">
-                                                <span>Лариса Роговая</span>
+                                                <span><?= $postComment['login'] ?></span>
                                             </a>
-                                            <time class="comments__time" datetime="2019-03-20">1 ч назад</time>
+                                            <time class="comments__time" datetime="2019-03-20">
+                                                <?php $commentTimestamp = strtotime($postComment['created_at']); ?>
+                                                <?= getTimeToShow($commentTimestamp) ?>
+                                            </time>
                                         </div>
                                         <p class="comments__text">
-                                            Красота!!!1!
+                                            <?= $postComment['content'] ?>
                                         </p>
                                     </div>
                                 </li>
-                                <li class="comments__item user">
-                                    <div class="comments__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
-                                        </a>
-                                    </div>
-                                    <div class="comments__info">
-                                        <div class="comments__name-wrapper">
-                                            <a class="comments__user-name" href="#">
-                                                <span>Лариса Роговая</span>
-                                            </a>
-                                            <time class="comments__time" datetime="2019-03-18">2 дня назад</time>
-                                        </div>
-                                        <p class="comments__text">
-                                            Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                                        </p>
-                                    </div>
-                                </li>
+                                <?php endforeach; ?>
+<!--                                <li class="comments__item user">-->
+<!--                                    <div class="comments__avatar">-->
+<!--                                        <a class="user__avatar-link" href="#">-->
+<!--                                            <img class="comments__picture" src="../img/userpic-larisa.jpg" alt="Аватар пользователя">-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                    <div class="comments__info">-->
+<!--                                        <div class="comments__name-wrapper">-->
+<!--                                            <a class="comments__user-name" href="#">-->
+<!--                                                <span>Лариса Роговая</span>-->
+<!--                                            </a>-->
+<!--                                            <time class="comments__time" datetime="2019-03-18">2 дня назад</time>-->
+<!--                                        </div>-->
+<!--                                        <p class="comments__text">-->
+<!--                                            Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.-->
+<!--                                        </p>-->
+<!--                                    </div>-->
+<!--                                </li>-->
                             </ul>
                             <a class="comments__more-link" href="#">
                                 <span>Показать все комментарии</span>
-                                <sup class="comments__amount">45</sup>
+                                <sup class="comments__amount"><?= count($postComments) ?></sup>
                             </a>
                         </div>
                     </div>
@@ -217,7 +236,7 @@
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
                             <a class="post-details__avatar-link user__avatar-link" href="#">
-                                <img class="post-details__picture user__picture" src="img/userpic-elvira.jpg" alt="Аватар пользователя">
+                                <img class="post-details__picture user__picture" src="../img/userpic-elvira.jpg" alt="Аватар пользователя">
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
@@ -280,13 +299,13 @@
             <div class="footer__my-info">
                 <ul class="footer__my-pages">
                     <li class="footer__my-page footer__my-page--feed">
-                        <a class="footer__page-link" href="feed.html">Моя лента</a>
+                        <a class="footer__page-link" href="../feed.html">Моя лента</a>
                     </li>
                     <li class="footer__my-page footer__my-page--popular">
                         <a class="footer__page-link" href="popular.html">Популярный контент</a>
                     </li>
                     <li class="footer__my-page footer__my-page--messages">
-                        <a class="footer__page-link" href="messages.html">Личные сообщения</a>
+                        <a class="footer__page-link" href="../messages.html">Личные сообщения</a>
                     </li>
                 </ul>
                 <div class="footer__copyright">
@@ -302,6 +321,6 @@
     </div>
 </footer>
 
-<script src="js/main.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>
