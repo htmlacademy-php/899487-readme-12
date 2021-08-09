@@ -95,8 +95,6 @@ if ($getId) {
 ");
 }
 
-$postId = $_GET['id'];
-
 $post  = getDataFromDatabase($con, "
     SELECT
         posts.*,
@@ -109,7 +107,7 @@ $post  = getDataFromDatabase($con, "
     JOIN users ON posts.author_id = users.id 
     JOIN content_types ON posts.content_type_id = content_types.id
     LEFT OUTER JOIN likes ON likes.post_id = posts.id 
-    WHERE posts.id = '{$postId}'
+    WHERE posts.id = '{$getId}'
     GROUP BY posts.id
     ORDER BY likes_amount DESC
     LIMIT 6 
@@ -118,17 +116,24 @@ $post  = getDataFromDatabase($con, "
 $postLikes = getDataFromDatabase($con, "
     SELECT likes.id
     FROM likes
-    WHERE post_id = '{$postId}'
+    WHERE post_id = '{$getId}'
 ");
 
 $postComments = getDataFromDatabase($con, "
     SELECT *
     FROM comments
     JOIN USERS ON comments.user_id = users.id
-    WHERE post_id = '{$postId}'
+    WHERE post_id = '{$getId}'
+");
+
+$postAuthor = getDataFromDatabase($con, "
+    SELECT login
+    FROM users
+    JOIN posts ON users.id = posts.author_id
+    WHERE posts.id = '{$getId}'
 ");
 
 //echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['contentTypes' => $contentTypes, 'posts' => $posts])]);
 
-echo include_template('post-details.php', ['post' => $post, 'postLikes' => $postLikes, 'postComments' => $postComments]);
+echo include_template('post-details.php', ['post' => $post, 'postLikes' => $postLikes, 'postComments' => $postComments, 'postAuthor' => $postAuthor]);
 
