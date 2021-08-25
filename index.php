@@ -1,5 +1,6 @@
 <?php
 require_once('./helpers.php');
+require_once('./db-data.php');
 
 $title = 'readme: популярное';
 
@@ -30,33 +31,9 @@ return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...<
 }
 
 
-$con = mysqli_connect('127.0.0.1', 'mysql', 'mysql', 'readme');
-
-if (!$con) {
-    printf('Ошибка соединения: ' . mysqli_connect_error() . '<br>');
-    printf('Код ошибки: ' . mysqli_connect_errno());
-    exit();
-}
-
-if (!mysqli_set_charset($con, "utf8")) {
-    printf("Ошибка при загрузке набора символов utf8: %s\n", mysqli_error($con));
-    exit();
-}
-
-function getDataFromDatabase($con, $query)
-{
-    $rows = mysqli_query($con, $query);
-    if (!$rows) {
-        printf("Код ошибки: %d\n", mysqli_errno($con));
-        exit();
-    }
-    return mysqli_fetch_all($rows, MYSQLI_ASSOC);
-}
-
-
 $contentTypes = getDataFromDatabase($con, "SELECT * FROM content_types");
-$getId = $_GET['id'];
 
+$getId = $_GET['id'];
 
 if ($getId) {
     $posts = getDataFromDatabase($con, "
@@ -95,45 +72,4 @@ if ($getId) {
 ");
 }
 
-$post  = getDataFromDatabase($con, "
-    SELECT
-        posts.*,
-        users.login, 
-        users.avatar,
-        content_types.name,
-        content_types.icon_class,
-        COUNT(likes.id) AS likes_amount
-    FROM posts 
-    JOIN users ON posts.author_id = users.id 
-    JOIN content_types ON posts.content_type_id = content_types.id
-    LEFT OUTER JOIN likes ON likes.post_id = posts.id 
-    WHERE posts.id = '{$getId}'
-    GROUP BY posts.id
-    ORDER BY likes_amount DESC
-    LIMIT 6 
-");
-
-$postLikes = getDataFromDatabase($con, "
-    SELECT likes.id
-    FROM likes
-    WHERE post_id = '{$getId}'
-");
-
-$postComments = getDataFromDatabase($con, "
-    SELECT *
-    FROM comments
-    JOIN USERS ON comments.user_id = users.id
-    WHERE post_id = '{$getId}'
-");
-
-$postAuthor = getDataFromDatabase($con, "
-    SELECT login
-    FROM users
-    JOIN posts ON users.id = posts.author_id
-    WHERE posts.id = '{$getId}'
-");
-
-//echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['contentTypes' => $contentTypes, 'posts' => $posts])]);
-
-echo include_template('post-details.php', ['post' => $post, 'postLikes' => $postLikes, 'postComments' => $postComments, 'postAuthor' => $postAuthor]);
-
+echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['contentTypes' => $contentTypes, 'posts' => $posts])]);
