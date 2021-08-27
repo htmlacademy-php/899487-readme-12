@@ -31,45 +31,10 @@ return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...<
 }
 
 
-$contentTypes = getDataFromDatabase($con, "SELECT * FROM content_types");
+$contentTypes = getDataFromDatabase($connection, "SELECT * FROM content_types");
 
 $getId = $_GET['id'];
 
-if ($getId) {
-    $posts = getDataFromDatabase($con, "
-    SELECT
-        posts.*, 
-        users.login, 
-        users.avatar,
-        content_types.name,
-        content_types.icon_class,
-        COUNT(likes.id) AS likes_amount
-    FROM posts 
-    JOIN users ON posts.author_id = users.id 
-    JOIN content_types ON posts.content_type_id = content_types.id
-    LEFT OUTER JOIN likes ON likes.post_id = posts.id 
-    WHERE content_types.id = '{$getId}'
-    GROUP BY posts.id
-    ORDER BY likes_amount DESC  
-    LIMIT 6 
-");
-} else {
-    $posts = getDataFromDatabase($con, "
-    SELECT
-        posts.*, 
-        users.login, 
-        users.avatar,
-        content_types.name,
-        content_types.icon_class,
-        COUNT(likes.id) AS likes_amount
-    FROM posts 
-    JOIN users ON posts.author_id = users.id 
-    JOIN content_types ON posts.content_type_id = content_types.id
-    LEFT OUTER JOIN likes ON likes.post_id = posts.id 
-    GROUP BY posts.id
-    ORDER BY likes_amount DESC  
-    LIMIT 6 
-");
-}
+$condition = $getId ? "content_types.id = '{$getId}'" : false;
 
-echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['contentTypes' => $contentTypes, 'posts' => $posts])]);
+echo include_template('layout.php', ['title' => $title, 'user_name' => $user_name, 'is_auth' => $is_auth, 'content' => include_template('main.php', ['contentTypes' => $contentTypes, 'posts' => makeRequestToDb($connection, $condition)])]);
