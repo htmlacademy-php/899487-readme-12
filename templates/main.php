@@ -74,7 +74,7 @@
                     </div>
                   <?php elseif ($post['icon_class'] === 'link'): ?>
                     <div class="post-link__wrapper">
-                      <a class="post-link__external" href="http://<?= $post['link'] ?>" title="Перейти по ссылке">
+                      <a class="post-link__external" href="<?= $post['link'] ?>" title="Перейти по ссылке">
                           <div class="post-link__info-wrapper">
                               <div class="post-link__icon-wrapper">
                                   <img src="" alt="Иконка">
@@ -114,14 +114,15 @@
                               <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                   <use xlink:href="#icon-heart-active"></use>
                               </svg>
-                              <span>0</span>
+                              <span><?= $post['likes_amount'] ?></span>
                               <span class="visually-hidden">количество лайков</span>
                           </a>
                           <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                               <svg class="post__indicator-icon" width="19" height="17">
                                   <use xlink:href="#icon-comment"></use>
                               </svg>
-                              <span>0</span>
+                              <span><?= $post['comments_amount'] ?></span>
+
                               <span class="visually-hidden">количество комментариев</span>
                           </a>
                       </div>
@@ -131,4 +132,3 @@
           <?php endforeach ?>
         </div>
     </div>
-
