@@ -7,8 +7,6 @@ $is_auth = rand(0, 1);
 $user_name = 'Sergei';
 
 
-$getId = $_GET['id'];
-
 $condition = $getId ? "content_types.id = '{$getId}'" : false;
 
 echo include_template(
@@ -18,5 +16,5 @@ echo include_template(
         'is_auth' => $is_auth,
         'content' => include_template('main.php', [
             'contentTypes' => $contentTypes,
-            'posts' => makeRequestToDb($connection, $condition)])
+            'posts' => getPosts($connection, $condition)])
     ]);

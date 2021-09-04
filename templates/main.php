@@ -34,7 +34,7 @@
             </div>
             <div class="popular__filters filters">
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
-                <?php $contentId = $_GET['id'] !== null ? $_GET['id'] : null ?>
+                <?php $contentId = isset($_GET['id']) ? intval($_GET['id']) : null ?>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                         <a class="filters__button filters__button--ellipse filters__button--all <?php echo $_GET['id'] ? '' : 'filters__button--active' ?>" href="/">

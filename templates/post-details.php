@@ -108,25 +108,13 @@
   <div class="container">
       <?php $post = $post[0] ?>
     <h1 class="page__title page__title--publication">
-        <?php echo $post['title'] ?>
+        <?= $post['title'] ?>
     </h1>
     <section class="post-details">
       <h2 class="visually-hidden">Публикация</h2>
       <div class="post-details__wrapper post-<?= $post['icon_class'] ?>">
         <div class="post-details__main-block post post--details">
-            <?php
-            if ($post['icon_class'] === 'text') {
-                echo include_template('post-text.php', ['text' => $post['content']]);
-            } elseif ($post['icon_class'] === 'quote') {
-                echo include_template('post-quote.php', ['text' => $post['content'], 'author' => $post['quote_author']]);
-            } elseif ($post['icon_class'] === 'photo') {
-                echo include_template('post-photo.php', ['img_url' => '../img/' . $post['image']]);
-            } elseif ($post['icon_class'] === 'video') {
-                echo include_template('post-video.php', ['video' => $post['video']]);
-            } elseif ($post['icon_class'] === 'link') {
-                echo include_template('post-link.php', ['url' => $post['link'], 'title' => $post['title']]);
-            }
-            ?>
+          <?= $postTemplate; ?>
           <div class="post__indicators">
             <div class="post__buttons">
               <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
