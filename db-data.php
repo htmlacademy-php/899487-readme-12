@@ -3,35 +3,33 @@ require_once('./helpers.php');
 
 function getConnection()
 {
-    $connetion = mysqli_connect('127.0.0.1', 'mysql', 'mysql', 'readme');
-    if (!$connetion) {
-        printf('Ошибка соединения: ' . mysqli_connect_error() . '<br>');
-        printf('Код ошибки: ' . mysqli_connect_errno());
+    $connection = mysqli_connect('127.0.0.1', 'mysql', 'mysql', 'readme');
+    if (!$connection) {
+        printf('Ошибка соединения. Код ошибки - ' . mysqli_connect_errno() . ': ' . mysqli_connect_error());
         exit();
     }
-    return $connetion;
+    if (!mysqli_set_charset($connection, "utf8")) {
+        printf("Ошибка при загрузке набора символов utf8: %s\n", mysqli_error($connection));
+        exit();
+    }
+    return $connection;
 }
 
-if (!mysqli_set_charset(getConnection(), "utf8")) {
-    printf("Ошибка при загрузке набора символов utf8: %s\n", mysqli_error(getConnection()));
-    exit();
-}
-
-function getDataFromDatabase($query)
+function getDataFromDatabase($connection, $query)
 {
-    $rows = mysqli_query(getConnection(), $query);
+    $rows = mysqli_query($connection, $query);
     if (!$rows) {
-        printf("Код ошибки: %d\n", mysqli_errno(getConnection()));
+        printf("Код ошибки: %d\n", mysqli_errno($connection));
         exit();
     }
     return mysqli_fetch_all($rows, MYSQLI_ASSOC);
 }
 
-function getPosts($condition)
+function getPosts($connection, $condition)
 {
     $queryFragment = $condition ? "WHERE {$condition}" : "";
 
-    return getDataFromDatabase("
+    return getDataFromDatabase($connection, "
         SELECT
             posts.*,
             users.login,
@@ -52,8 +50,8 @@ function getPosts($condition)
     ");
 }
 
-function getContentTypes()
+function getContentTypes($connection)
 {
-    return getDataFromDatabase("SELECT * FROM content_types");
+    return getDataFromDatabase($connection,"SELECT * FROM content_types");
 }
 

@@ -1,25 +1,26 @@
 <?php
 require_once('./db-data.php');
 
+$connection = getConnection();
 $getId = isset($_GET['id']) ? intval($_GET['id']) : null;
 
-function getPost($getId)
+function getPost($connection, $getId)
 {
-    return getPosts("posts.id = '{$getId}'");
+    return getPosts($connection, "posts.id = '{$getId}'");
 }
 
-function getPostLikes($getId)
+function getPostLikes($connection, $getId)
 {
-    return getDataFromDatabase("
+    return getDataFromDatabase($connection, "
         SELECT likes.id
         FROM likes
         WHERE post_id = '{$getId}'
     ");
 }
 
-function getPostComments($getId)
-{ 
-    return getDataFromDatabase("
+function getPostComments($connection, $getId)
+{
+    return getDataFromDatabase($connection, "
         SELECT *
         FROM comments
         JOIN USERS ON comments.user_id = users.id
@@ -27,9 +28,9 @@ function getPostComments($getId)
     ");
 }
 
-function getPostAuthor($getId)
-{ 
-    return getDataFromDatabase("
+function getPostAuthor($connection, $getId)
+{
+    return getDataFromDatabase($connection, "
         SELECT users.id, registration_date, login
         FROM users
         JOIN posts ON users.id = posts.author_id
@@ -47,9 +48,9 @@ function getUserRegistrationDate($postAuthor)
     return isset($postAuthor[0]['registration_date']) ? $postAuthor[0]['registration_date'] : null ;
 }
 
-function getAuthorSubscribers($postAuthorId) 
+function getAuthorSubscribers($connection, $postAuthorId)
 {
-    return getDataFromDatabase("
+    return getDataFromDatabase($connection, "
         SELECT author_id, subscriber_id
         FROM subscribers
         JOIN users ON users.id = subscriber_id
@@ -57,14 +58,14 @@ function getAuthorSubscribers($postAuthorId)
     ");
 }
 
-function getTotalPosts($postAuthorId)
+function getTotalPosts($connection, $postAuthorId)
 {
-    return getDataFromDatabase("
+    return getDataFromDatabase($connection, "
         SELECT id, author_id
         FROM posts
         WHERE author_id = '{$postAuthorId}'
     ");
-} 
+}
 
 function getPostTemplate($post)
 {
@@ -79,19 +80,20 @@ function getPostTemplate($post)
         return include_template('post-video.php', ['video' => $post['video']]);
     } elseif ($post['icon_class'] === 'link') {
         return include_template('post-link.php', ['url' => $post['link'], 'title' => $post['title']]);
+    } else {
+        return null;
     }
 }
 
 echo include_template(
     'post-details.php', [
-        'post' => getPost($getId),
-        'postTemplate' => getPostTemplate(getPost($getId)),
-        'postLikes' => getPostLikes($getId),
-        'postComments' => getPostComments($getId),
-        'postAuthor' => getPostAuthor($getId),
-        'userRegistrationDate' => getUserRegistrationDate(getPostAuthor($getId)),
-        'authorSubscribers' => getAuthorSubscribers(getPostAuthorId(getPostAuthor($getId))),
-        'totalPosts' => getTotalPosts(getPostAuthorId(getPostAuthor($getId)))
+        'post' => getPost($connection, $getId),
+        'postTemplate' => getPostTemplate(getPost($connection, $getId)),
+        'postComments' => getPostComments($connection, $getId),
+        'postAuthor' => getPostAuthor($connection, $getId),
+        'userRegistrationDate' => getUserRegistrationDate(getPostAuthor($connection, $getId)),
+        'authorSubscribers' => getAuthorSubscribers($connection, (getPostAuthor($connection, $getId))),
+        'totalPosts' => getTotalPosts($connection, getPostAuthorId(getPostAuthor($connection, $getId)))
     ]
 );
 

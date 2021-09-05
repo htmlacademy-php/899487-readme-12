@@ -122,13 +122,12 @@
                                   <use xlink:href="#icon-comment"></use>
                               </svg>
                               <span><?= $post['comments_amount'] ?></span>
-
                               <span class="visually-hidden">количество комментариев</span>
                           </a>
                       </div>
                   </div>
               </footer>
           </article>
-          <?php endforeach ?>
+          <?php endforeach; ?>
         </div>
     </div>

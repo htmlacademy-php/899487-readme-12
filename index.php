@@ -2,6 +2,8 @@
 require_once('./helpers.php');
 require_once('./db-data.php');
 
+$connection = getConnection();
+
 $title = 'readme: популярное';
 $is_auth = rand(0, 1);
 $user_name = 'Sergei';
@@ -16,6 +18,6 @@ echo include_template(
         'user_name' => $user_name,
         'is_auth' => $is_auth,
         'content' => include_template('main.php', [
-            'contentTypes' => getContentTypes(),
-            'posts' => getPosts($condition)])
+            'contentTypes' => getContentTypes($connection),
+            'posts' => getPosts($connection, $condition)])
     ]);

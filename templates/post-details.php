@@ -114,7 +114,7 @@
       <h2 class="visually-hidden">Публикация</h2>
       <div class="post-details__wrapper post-<?= $post['icon_class'] ?>">
         <div class="post-details__main-block post post--details">
-          <?= $postTemplate; ?>
+          <?= $template = $postTemplate ? $postTemplate : 'Error! No template.'; ?>
           <div class="post__indicators">
             <div class="post__buttons">
               <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
@@ -124,14 +124,14 @@
                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                   <use xlink:href="#icon-heart-active"></use>
                 </svg>
-                <span><?= count($postLikes) ?></span>
+                <span><?= $post['likes_amount'] ?></span>
                 <span class="visually-hidden">количество лайков</span>
               </a>
               <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                 <svg class="post__indicator-icon" width="19" height="17">
                   <use xlink:href="#icon-comment"></use>
                 </svg>
-                <span><?= count($postComments) ?></span>
+                <span><?= $post['comments_amount'] ?></span>
                 <span class="visually-hidden">количество комментариев</span>
               </a>
               <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
