@@ -115,10 +115,17 @@
               <ul class="adding-post__tabs-list filters__list tabs__list">
                 <?php foreach ($contentTypes as $contentType): ?>
                 <li class="adding-post__tabs-item filters__item">
-                  <a class="adding-post__tabs-link filters__button filters__button--<?= $contentType['icon_class'] ?> filters__button--active tabs__item tabs__item--active button">
-                    <svg class="filters__icon" width="22" height="18">
-                      <use xlink:href="#icon-filter-<?= $contentType['icon_class'] ?>"></use>
-                    </svg>
+                    <?php if ($contentType['icon_class'] === 'photo'): ?>
+                        <a class="adding-post__tabs-link filters__button filters__button--photo filters__button--active tabs__item tabs__item--active button">
+                        <svg class="filters__icon" width="22" height="18">
+                          <use xlink:href="#icon-filter-text"></use>
+                        </svg>
+                    <?php else: ?>
+                        <a class="adding-post__tabs-link filters__button filters__button--<?= $contentType['icon_class'] ?> tabs__item">
+                        <svg class="filters__icon" width="22" height="18">
+                            <use xlink:href="#icon-filter-<?= $contentType['icon_class'] ?>"></use>
+                        </svg>
+                    <?php endif; ?>
                     <span><?= $contentType['name'] ?></span>
                   </a>
                 </li>
@@ -128,7 +135,7 @@
             <div class="adding-post__tab-content">
               <section class="adding-post__photo tabs__content tabs__content--active">
                 <h2 class="visually-hidden">Форма добавления фото</h2>
-                <form class="adding-post__form form" action="#" method="post" enctype="multipart/form-data">
+                <form class="adding-post__form form" action="../add.php" method="post" enctype="multipart/form-data">
                   <div class="form__text-inputs-wrapper">
                     <div class="form__text-inputs">
                       <div class="adding-post__input-wrapper form__input-wrapper">
@@ -200,7 +207,7 @@
 
               <section class="adding-post__video tabs__content">
                 <h2 class="visually-hidden">Форма добавления видео</h2>
-                <form class="adding-post__form form" action="#" method="post" enctype="multipart/form-data">
+                <form class="adding-post__form form" action="../add.php" method="post" enctype="multipart/form-data">
                   <div class="form__text-inputs-wrapper">
                     <div class="form__text-inputs">
                       <div class="adding-post__input-wrapper form__input-wrapper">
@@ -254,7 +261,7 @@
 
               <section class="adding-post__text tabs__content">
                 <h2 class="visually-hidden">Форма добавления текста</h2>
-                <form class="adding-post__form form" action="#" method="post">
+                <form class="adding-post__form form" action="../add.php" method="post">
                   <div class="form__text-inputs-wrapper">
                     <div class="form__text-inputs">
                       <div class="adding-post__input-wrapper form__input-wrapper">
@@ -308,7 +315,7 @@
 
               <section class="adding-post__quote tabs__content">
                 <h2 class="visually-hidden">Форма добавления цитаты</h2>
-                <form class="adding-post__form form" action="#" method="post">
+                <form class="adding-post__form form" action="../add.php" method="post">
                   <div class="form__text-inputs-wrapper">
                     <div class="form__text-inputs">
                       <div class="adding-post__input-wrapper form__input-wrapper">
@@ -373,7 +380,7 @@
 
               <section class="adding-post__link tabs__content">
                 <h2 class="visually-hidden">Форма добавления ссылки</h2>
-                <form class="adding-post__form form" action="#" method="post">
+                <form class="adding-post__form form" action="../add.php" method="post">
                   <div class="form__text-inputs-wrapper">
                     <div class="form__text-inputs">
                       <div class="adding-post__input-wrapper form__input-wrapper">
