@@ -135,11 +135,10 @@ function getContentTypes($connection)
     return getDataFromDatabase($connection,"SELECT * FROM content_types");
 }
 
-function createQueryToAddPost()
+function getNewPostData()
 {
     $postData = [
-        'id' => '',
-        'created_at' => date('Y/m/d H:i:s', time()),
+        'created_at' => date('Y-m-d H:i:s', time()),
         'title' => '',
         'content' => '',
         'quote_author' => '',
@@ -159,4 +158,33 @@ function createQueryToAddPost()
         }
     }
     return $postData;
+}
+
+function insertDataIntoDb($connection)
+{
+    $data = getNewPostData();
+
+    $views = intval($data['views']);
+    $contentTypeId = intval($data['content_type_id']);
+
+    $query = "
+        INSERT INTO posts SET
+            created_at = '". mysqli_real_escape_string($connection, "{$data['created_at']}") ."',
+            title = '". mysqli_real_escape_string($connection, "{$data['title']}") ."',
+            content = '". mysqli_real_escape_string($connection, "{$data['content']}") ."',
+            quote_author = '". mysqli_real_escape_string($connection, "{$data['quote_author']}") ."',
+            image = '". mysqli_real_escape_string($connection, "{$data['image']}") ."',
+            video = '". mysqli_real_escape_string($connection, "{$data['video']}") ."',
+            link = '". mysqli_real_escape_string($connection, "{$data['link']}") ."',
+            views = '". $views ."',
+            author_id = '". 1 ."',
+            content_type_id = '". "{$contentTypeId}" ."'
+    ";
+
+    if (mysqli_query($connection, $query)) {
+        echo "Data added.";
+    } else {
+        echo "Ошибка добавления данных в базу данных. Код ошибки - " . mysqli_connect_errno() . ": " . mysqli_error($connection);
+    }
+
 }
