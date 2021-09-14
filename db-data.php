@@ -68,7 +68,7 @@ function getPostComments($connection, $getId)
     return getDataFromDatabase($connection, "
         SELECT *
         FROM comments
-        JOIN USERS ON comments.user_id = users.id
+        JOIN users ON comments.user_id = users.id
         WHERE post_id = '{$getId}'
     ");
 }
@@ -133,4 +133,30 @@ function getPostTemplate($post)
 function getContentTypes($connection)
 {
     return getDataFromDatabase($connection,"SELECT * FROM content_types");
+}
+
+function createQueryToAddPost()
+{
+    $postData = [
+        'id' => '',
+        'created_at' => date('Y/m/d H:i:s', time()),
+        'title' => '',
+        'content' => '',
+        'quote_author' => '',
+        'image' => '',
+        'video' => '',
+        'link' => '',
+        'views' => '',
+        'author_id' => 1,
+        'content_type_id' => ''
+    ];
+
+    if (count($_POST) > 0) {
+        foreach ($_POST as $key => $value) {
+            if (array_key_exists($key, $postData)) {
+                $postData[$key] = $value;
+            }
+        }
+    }
+    return $postData;
 }
