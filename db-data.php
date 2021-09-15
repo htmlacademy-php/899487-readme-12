@@ -1,5 +1,7 @@
 <?php
 
+require_once('./validation.php');
+
 function getConnection()
 {
     $connection = mysqli_connect('127.0.0.1', 'mysql', 'mysql', 'readme');
@@ -160,10 +162,18 @@ function getNewPostData()
     return $postData;
 }
 
-function insertDataIntoDb($connection)
+function insertDataIntoDb($connection, $query, $dataType)
+{
+    if (mysqli_query($connection, $query)) {
+        echo "{$dataType} - успешно добавлено.";
+    } else {
+        echo "Ошибка добавления данных в базу данных. Код ошибки - " . mysqli_connect_errno() . ": " . mysqli_error($connection);
+    }
+}
+
+function prepareNewPostData($connection)
 {
     $data = getNewPostData();
-
     $views = intval($data['views']);
     $contentTypeId = intval($data['content_type_id']);
 
@@ -181,10 +191,16 @@ function insertDataIntoDb($connection)
             content_type_id = '". "{$contentTypeId}" ."'
     ";
 
-    if (mysqli_query($connection, $query)) {
-        echo "Data added.";
-    } else {
-        echo "Ошибка добавления данных в базу данных. Код ошибки - " . mysqli_connect_errno() . ": " . mysqli_error($connection);
-    }
+    insertDataIntoDb($connection, $query, 'Пост');
+}
 
+function prepareTagsData($connection)
+{
+    $tags = getValidTags();
+    if ($tags) {
+        foreach ($tags as $tag) {
+            $query = "INSERT INTO hashtags (name) VALUES ('{$tag}')";
+            insertDataIntoDb($connection, $query, 'Хэш-тэг');
+        }
+    }
 }

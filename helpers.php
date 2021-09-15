@@ -321,3 +321,7 @@ function getTimeToShow($timestamp)
             return formatRelativeTime($timeDifference / MONTH, 'месяц', 'месяца', 'месяцев');
     }
 }
+
+$title = 'readme: популярное';
+$is_auth = rand(0, 1);
+$user_name = 'Sergei';

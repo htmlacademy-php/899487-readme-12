@@ -4,10 +4,6 @@ require_once('./db-data.php');
 
 $connection = getConnection();
 
-$title = 'readme: популярное';
-$is_auth = rand(0, 1);
-$user_name = 'Sergei';
-
 $getId = isset($_GET['id']) ? intval($_GET['id']) : null;
 
 $condition = $getId ? "content_types.id = '{$getId}'" : null;
