@@ -322,6 +322,23 @@ function getTimeToShow($timestamp)
     }
 }
 
-$title = 'readme: популярное';
-$is_auth = rand(0, 1);
-$user_name = 'Sergei';
+function getTitle()
+{
+    return 'readme: популярное';
+}
+
+function isAuth()
+{
+    return rand(0, 1);
+}
+
+function getUsername()
+{
+    return 'Sergei';
+}
+
+function getErrorTemplate()
+{
+    header("HTTP/1.1 404 Not Found");
+    return include_template('404.php');
+}

@@ -12,9 +12,9 @@ checkImageValidity();
 
 echo include_template(
     'layout.php', [
-        'title' => $title,
-        'user_name' => $user_name,
-        'is_auth' => $is_auth,
+        'title' => getTitle(),
+        'user_name' => getUsername(),
+        'is_auth' => isAuth(),
         'content' => include_template('adding-post.php', [
             'formTitle' => include_template('form-title.php'),
             'formTags' => include_template('form-tags.php'),
