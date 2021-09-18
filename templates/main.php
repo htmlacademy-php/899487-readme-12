@@ -34,15 +34,16 @@
             </div>
             <div class="popular__filters filters">
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
+                <?php $contentId = isset($_GET['id']) ? intval($_GET['id']) : null ?>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="#">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php echo $_GET['id'] ? '' : 'filters__button--active' ?>" href="/">
                             <span>Все</span>
                         </a>
                     </li>
                     <?php foreach ($contentTypes as $contentType): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button" href="#">
+                        <a class="filters__button filters__button--<?= $contentType['icon_class'] ?> button <?php echo $_GET['id'] === $contentType['id'] ? 'filters__button--active' : ''; ?>" href="/?id=<?= $contentType['id'] ?>">
                             <span class="visually-hidden"><?= $contentType['name'] ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= $contentType['icon_class'] ?>"></use>
@@ -57,7 +58,7 @@
           <?php foreach ($posts as $postIndex => $post): ?>
           <article class="popular__post post">
               <header class="post__header">
-                <h2><?= $post['title'] ?></h2>
+                <h2><a href="post.php?id=<?= $post['id'] ?>"><?= $post['title'] ?></a></h2>
               </header>
                 <div class="post__main">
                   <?php if ($post['icon_class'] === 'quote'): ?>
@@ -73,7 +74,7 @@
                     </div>
                   <?php elseif ($post['icon_class'] === 'link'): ?>
                     <div class="post-link__wrapper">
-                      <a class="post-link__external" href="http://<?= $post['link'] ?>" title="Перейти по ссылке">
+                      <a class="post-link__external" href="<?= $post['link'] ?>" title="Перейти по ссылке">
                           <div class="post-link__info-wrapper">
                               <div class="post-link__icon-wrapper">
                                   <img src="" alt="Иконка">
@@ -113,21 +114,20 @@
                               <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                   <use xlink:href="#icon-heart-active"></use>
                               </svg>
-                              <span>0</span>
+                              <span><?= $post['likes_amount'] ?></span>
                               <span class="visually-hidden">количество лайков</span>
                           </a>
                           <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                               <svg class="post__indicator-icon" width="19" height="17">
                                   <use xlink:href="#icon-comment"></use>
                               </svg>
-                              <span>0</span>
+                              <span><?= $post['comments_amount'] ?></span>
                               <span class="visually-hidden">количество комментариев</span>
                           </a>
                       </div>
                   </div>
               </footer>
           </article>
-          <?php endforeach ?>
+          <?php endforeach; ?>
         </div>
     </div>
-

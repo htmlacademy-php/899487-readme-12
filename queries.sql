@@ -1,21 +1,21 @@
 /* Добавляем данные в таблицу content_types */
 INSERT INTO content_types (id, name, icon_class) VALUES
-(1, 'Текст', 'text'),
-(2, 'Цитата', 'quote'),
-(3, 'Картинка', 'photo'),
-(4, 'Видео', 'video'),
+(1, 'Фото', 'photo'),
+(2, 'Видео', 'video'),
+(3, 'Текст', 'text'),
+(4, 'Цитата', 'quote'),
 (5, 'Ссылка', 'link');
 
 /* Добавляем данные в таблицу users */
 INSERT INTO users (id, registration_date, email, login, password, avatar) VALUES
-(1, '2021-06-10', 'viktorр@email.com', 'Виктор', 'af3Pqfwl412', 'userpic-mark.jpg'),
-(2, '2021-06-14', 'larisa@email.com', 'Лариса', 'asf23Dfffa', 'userpic-larisa-small.jpg'),
-(3, '2021-06-17', 'vladik@email.com', 'Владик', 'fkr#$lkfvd', 'userpic.jpg');
+(1, '2021-06-10 12:10:15', 'viktorр@email.com', 'Виктор', 'af3Pqfwl412', 'userpic-mark.jpg'),
+(2, '2021-06-14 15:11:05', 'larisa@email.com', 'Лариса', 'asf23Dfffa', 'userpic-larisa-small.jpg'),
+(3, '2021-06-17 11:15:43', 'vladik@email.com', 'Владик', 'fkr#$lkfvd', 'userpic.jpg');
 
 /* Добавляем данные в таблицу posts */
 INSERT INTO posts (id, created_at, title, content, quote_author, image, video, link, views, author_id, content_type_id) VALUES
-(1, '2021-06-16 12:00:05', 'Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', '', '', '', '', 5, 2, 2),
-(2, '2021-06-15 15:14:21', 'Наконец, обработал фотки!', '', '', 'rock-medium.jpg', '', '', 10, 1, 3),
+(1, '2021-06-16 12:00:05', 'Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', '', '', '', '', 5, 2, 4),
+(2, '2021-06-15 15:14:21', 'Наконец, обработал фотки!', '', '', 'rock-medium.jpg', '', '', 10, 1, 1),
 (3, '2021-06-17 11:15:12', 'Лучшие курсы', '', '', '', '', 'www.htmlacademy.ru', 15, 3, 5);
 
 /* Добавляем данные в таблицу comments */
@@ -35,7 +35,7 @@ SELECT posts.* FROM posts JOIN users ON posts.author_id = users.id WHERE users.l
 SELECT comments.content, users.login FROM comments JOIN users ON comments.user_id = users.id WHERE comments.post_id = 2;
 
 /* Виктор ставит like посту Владик */
-INSERT INTO likes (id, user_id, post_id) VALUES (1, 1, 3), (2, 2, 3), (3, 3, 1); 
+INSERT INTO likes (id, user_id, post_id) VALUES (1, 1, 3), (2, 2, 3), (3, 3, 1);
 
 /* Лариса подписывается на Виктор */
 INSERT INTO subscribers (id, author_id, subscriber_id) VALUES (1, 1, 2);

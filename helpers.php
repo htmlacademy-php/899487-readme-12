@@ -263,6 +263,27 @@ function generate_random_date($index)
     return $dt;
 }
 
+function trimMessage ($message, $maxDisplayedMessageLength = 300)
+{
+    $wordsArr = explode(' ', $message);
+    $trimmedWordsArr = [];
+    $messageQuantity = 0;
+    $readMoreButton = '<a class="post-text__more-link" href="#">Читать далее</a>';
+
+    foreach ($wordsArr as $word) {
+        $messageQuantity += strlen($word);
+        if ($messageQuantity <= $maxDisplayedMessageLength) {
+            array_push($trimmedWordsArr, $word);
+        } else {
+            break;
+        }
+    }
+
+    $trimmedMessage = implode(' ', $trimmedWordsArr);
+
+    return $messageQuantity > $maxDisplayedMessageLength ? "<p>{$trimmedMessage}...</p>{$readMoreButton}" : "<p>{$trimmedMessage}</p>";
+}
+
 date_default_timezone_set('Europe/Moscow');
 
 const SECOND = 1;
@@ -270,6 +291,7 @@ const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 const WEEK = 7 * DAY;
+const MONTH = WEEK * 4;
 
 function formatRelativeTime($amount, $one, $two, $many)
 {
@@ -277,10 +299,10 @@ function formatRelativeTime($amount, $one, $two, $many)
     return $amount . ' ' . get_noun_plural_form($amount, $one, $two, $many) . ' назад';
 }
 
-function getTimeToShow($postTimestamp)
+function getTimeToShow($timestamp)
 {
     $currentTimestamp = strtotime(date('d.m.Y.H:i:s'));
-    $timeDifference = $currentTimestamp - $postTimestamp;
+    $timeDifference = $currentTimestamp - $timestamp;
 
     switch (true) {
         case ($timeDifference < HOUR):
@@ -296,6 +318,27 @@ function getTimeToShow($postTimestamp)
             return formatRelativeTime($timeDifference / WEEK, 'неделю', 'недели', 'недель');
 
         case ($timeDifference >= 5 * WEEK):
-            return formatRelativeTime($timeDifference / WEEK, 'месяц', 'месяца', 'месяцев');
+            return formatRelativeTime($timeDifference / MONTH, 'месяц', 'месяца', 'месяцев');
     }
+}
+
+function getTitle()
+{
+    return 'readme: популярное';
+}
+
+function isAuth()
+{
+    return rand(0, 1);
+}
+
+function getUsername()
+{
+    return 'Sergei';
+}
+
+function getErrorTemplate()
+{
+    header("HTTP/1.1 404 Not Found");
+    return include_template('404.php');
 }
