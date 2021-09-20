@@ -132,9 +132,12 @@ function getPostTemplate($post)
     }
 }
 
-function getContentTypes($connection)
+function getContentTypes($connection, $condition)
 {
-    return getDataFromDatabase($connection,"SELECT * FROM content_types");
+    return getDataFromDatabase($connection,"
+        SELECT * FROM content_types
+        {$condition}
+    ");
 }
 
 function getNewPostData()
@@ -194,7 +197,7 @@ function prepareNewPostData($connection)
     insertDataIntoDb($connection, $query, 'Пост');
 }
 
-function prepareTagsData($connection)
+function insertTagsIntoDb($connection)
 {
     $tags = getValidTags();
     if ($tags) {

@@ -69,7 +69,12 @@ function checkImageValidity()
         return false;
     }
 
-    if ($_FILES['image']['type'] !== 'image/png' || $_FILES['image']['type'] !== 'image/jpeg' || $_FILES['image']['type'] !== 'image/gif') {
+    if ($_POST['content_type_id'] == 1 && !filter_var($_POST['link'], FILTER_VALIDATE_URL) && $_FILES['image']['name'] === '') {
+        echo 'Некорректная ссылка на картинку.';
+        return false;
+    }
+
+    if ($_FILES['image']['name'] !== '' && $_FILES['image']['type'] !== 'image/png' || $_FILES['image']['type'] !== 'image/jpeg' || $_FILES['image']['type'] !== 'image/gif') {
         echo 'Неподдерживаемый тип файла.';
         return false;
     }
@@ -78,10 +83,12 @@ function checkImageValidity()
         $name = $_FILES['image']['name'];
         move_uploaded_file($_FILES['image']['tmp_name'], "./uploads/{$name}");
         $_POST['link'] = "./uploads/{$name}";
+        echo 'Картинка добавлена.';
         return true;
     }
 
-    if ($_POST['content_type_id'] == 1 && $_POST['link'] !== '' && $_FILES['image']['name'] === '') {
+    if ($_POST['content_type_id'] == 1 && filter_var($_POST['link'],FILTER_VALIDATE_URL) && $_POST['link'] !== '' && $_FILES['image']['name'] === '') {
+        echo 'Картинка добавлена.';
         return true;
     }
 }

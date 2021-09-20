@@ -9,6 +9,7 @@ print_r($_POST);
 print_r($_FILES['image']);
 
 checkImageValidity();
+insertTagsIntoDb($connection);
 
 echo include_template(
     'layout.php', [
@@ -18,7 +19,7 @@ echo include_template(
         'content' => include_template('adding-post.php', [
             'formTitle' => include_template('form-title.php'),
             'formTags' => include_template('form-tags.php'),
-            'contentTypes' => getContentTypes($connection)
+            'contentTypes' => getContentTypes($connection, '')
             ]
         )
     ]
