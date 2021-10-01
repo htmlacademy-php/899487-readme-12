@@ -3,7 +3,7 @@
         Заголовок
         <span class="form__input-required">*</span>
     </label>
-    <div class="form__input-section">
+    <div class="form__input-section <?= !$_GET['title'] ? 'form__input-section--error' : '' ?>">
         <input class="adding-post__input form__input" id="photo-heading" type="text" name="title" placeholder="Введите заголовок">
         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
         <div class="form__error-text">

@@ -5,11 +5,16 @@ require_once('./validation.php');
 
 $connection = getConnection();
 
-print_r($_POST);
-print_r($_FILES['image']);
+//print_r($_POST);
+//print_r($_FILES['image']);
 
-checkImageValidity();
-insertTagsIntoDb($connection);
+//checkImageValidity();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    prepareNewPostData($connection);
+    insertTagsIntoDb($connection);
+    header("Location: /index.php?success=true");
+}
 
 echo include_template(
     'layout.php', [

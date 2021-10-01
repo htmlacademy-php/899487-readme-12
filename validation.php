@@ -10,39 +10,21 @@ function getTags()
             return $tag !== '';
         }, ARRAY_FILTER_USE_KEY);
     }
-    echo 'Укажите хэш-теги.';
+//    echo 'Укажите хэш-теги.';
     return false;
 }
 
 function checkTagsValidity($tags)
 {
     foreach ($tags as $tag) {
-        if (substr($tag , 0 , 1) !== '#') {
-            echo 'Хэш-тег должен начинаться с "#".';
+        $repeats = array_filter($tags , function ($checkedTag) use ($tag) {
+            return strtolower($tag) === strtolower($checkedTag);
+            }, ARRAY_FILTER_USE_KEY);
+
+        if (count($repeats) > 1) {
+            echo 'Один и тот же хэш-тег не может быть использован дважды';
             return false;
         }
-
-        if ($tag === '#') {
-            echo 'Хэш-тег не может состоять только из одной решётки.';
-            return false;
-        }
-
-        preg_match_all('/#/' , $tag , $matches);
-
-        if (substr($tag , 0 , 1) === '#' && count($matches[0]) > 1) {
-            echo 'Хэш-теги разделяются пробелами.';
-            return false;
-        }
-
-//        $repeats = array_filter($tags , function ($checkedTag) {
-//                return strtolower($tag) === strtolower($checkedTag);
-//            } , ARRAY_FILTER_USE_KEY);
-//        }
-//
-//        if (count($repeats) > 1) {
-//            echo 'Один и тот же хэш-тег не может быть использован дважды';
-//            return false;
-//        }
 
         if (count($tags) > TAGS_MAX) {
             echo 'Нельзя указать больше пяти хэш-тегов.';

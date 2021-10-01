@@ -10,8 +10,6 @@ $template = '';
 $condition = !$getId ? false : "content_types.id = '{$getId}'";
 $postsData = getPosts($connection, $condition);
 
-$url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
 if ($postsData) {
     $template = include_template('main.php', [
         'contentTypes' => getContentTypes($connection, ''),
@@ -32,7 +30,7 @@ if (!$getId || !getContentTypes($connection, "WHERE content_types.id = '{$getId}
     ]);
 }
 
-if ($url === 'http://899487-readme-12/') {
+if (!$getId) {
     $template = include_template('main.php', [
         'contentTypes' => getContentTypes($connection, ''),
         'content' => include_template('posts.php', [

@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS hashtags
 CREATE TABLE IF NOT EXISTS posts_hashtags
 (
     post_id    INT NOT NULL,
-    hashtag_id INT NOT NULL AUTO_INCREMENT,
+    hashtag_id INT NOT NULL,
     FOREIGN KEY (post_id) REFERENCES posts (id),
     FOREIGN KEY (hashtag_id) REFERENCES hashtags (id)
 );
