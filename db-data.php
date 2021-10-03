@@ -140,6 +140,40 @@ function getContentTypes($connection, $condition)
     ");
 }
 
+function checkFieldsValidity($postData, $contentTypeId) {
+    $errors = [];
+    
+    if (!$postData['title']) {
+        array_push($errors, 'title');
+    }
+
+    if ($contentTypeId === 1 && !$postData['image']) {
+        array_push($errors, 'image');
+    }
+
+    if ($contentTypeId === 2 && !$postData['video']) {
+        array_push($errors, 'video');
+    }
+
+    if ($contentTypeId === 3 && !$postData['content']) {
+        array_push($errors, 'content');
+    }
+
+    if ($contentTypeId === 4 && !$postData['content']) {
+        array_push($errors, 'content');
+    }
+
+    if ($contentTypeId === 4 && !$postData['quote_author']) {
+        array_push($errors, 'quote_author');
+    }
+
+    if ($contentTypeId === 5 && !$postData['link']) {
+        array_push($errors, 'link');
+    }
+
+    return $errors;
+}
+
 function getNewPostData()
 {
     $postData = [
@@ -179,10 +213,13 @@ function insertDataIntoDb($connection, $query, $dataType)
 function prepareNewPostData($connection)
 {
     $data = getNewPostData();
-    $views = intval($data['views']);
     $contentTypeId = intval($data['content_type_id']);
+    $views = intval($data['views']);
 
-    $query = "
+    if (checkFieldsValidity($data, $contentTypeId)) {
+        return false;
+    } else {
+        $query = "
         INSERT INTO posts SET
             created_at = '". mysqli_real_escape_string($connection, "{$data['created_at']}") ."',
             title = '". mysqli_real_escape_string($connection, "{$data['title']}") ."',
@@ -194,9 +231,13 @@ function prepareNewPostData($connection)
             views = '". $views ."',
             author_id = '". 1 ."',
             content_type_id = '". "{$contentTypeId}" ."'
-    ";
+        ";
 
-    insertDataIntoDb($connection, $query, 'Пост');
+        insertDataIntoDb($connection, $query, 'Пост');
+    }
+
+    
+    
 }
 
 function getExistedTagId($connection, $tag)

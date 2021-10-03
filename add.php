@@ -5,15 +5,17 @@ require_once('./validation.php');
 
 $connection = getConnection();
 
-//print_r($_POST);
+
 //print_r($_FILES['image']);
 
 //checkImageValidity();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    prepareNewPostData($connection);
-    insertTagsIntoDb($connection);
-    header("Location: /index.php?success=true");
+    if (prepareNewPostData($connection)) {
+        insertTagsIntoDb($connection);
+        header("Location: /index.php?success=true");
+    }
+
 }
 
 echo include_template(
@@ -22,7 +24,10 @@ echo include_template(
         'user_name' => getUsername(),
         'is_auth' => isAuth(),
         'content' => include_template('adding-post.php', [
-            'formTitle' => include_template('form-title.php'),
+            'formTitle' => include_template('form-title.php', ['inputError' => include_template('input-error.php')]),
+            'inputError' => include_template('input-error.php'),
+            'formError' => include_template('form-error.php'),
+            'submitButton' => include_template('submit-button.php'),
             'formTags' => include_template('form-tags.php'),
             'contentTypes' => getContentTypes($connection, '')
             ]
