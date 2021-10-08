@@ -5,37 +5,29 @@ require_once('./db-data.php');
 $connection = getConnection();
 $getId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-$template = '';
+$postsTemplate = '';
 
-$condition = !$getId ? false : "content_types.id = '{$getId}'";
-$postsData = getPosts($connection, $condition);
+$condition = !$getId ? '' : "WHERE content_types.id = '{$getId}'";
+$posts = getPosts($connection, $condition);
 
-if ($postsData) {
-    $template = include_template('main.php', [
-        'contentTypes' => getContentTypes($connection, ''),
-        'content' => include_template('posts.php', [
-            'posts' => getPosts($connection, $condition)])
+$contentTypes = getContentTypes($connection, '');
+
+if ($posts) {
+    $postsTemplate = include_template('posts.php', [
+        'posts' => $posts
     ]);
 } else {
-    $template = include_template('main.php', [
-        'contentTypes' => getContentTypes($connection, ''),
-        'content' => include_template('no-posts.php')
-    ]);
+    $postsTemplate = include_template('no-posts.php');
 }
 
-if (!$getId || !getContentTypes($connection, "WHERE content_types.id = '{$getId}'")) {
-    $template = include_template('main.php', [
-        'contentTypes' => getContentTypes($connection, ''),
-        'content' => getErrorTemplate()
-    ]);
-}
+$mainTemplate = include_template('main.php', [
+        'contentTypes' => $contentTypes,
+        'content' => $postsTemplate
+    ]
+);
 
-if (!$getId) {
-    $template = include_template('main.php', [
-        'contentTypes' => getContentTypes($connection, ''),
-        'content' => include_template('posts.php', [
-            'posts' => getPosts($connection, $condition)])
-    ]);
+if (!getContentTypes($connection, $condition) || $getId === false) {
+    $mainTemplate = getErrorTemplate();
 }
 
 echo include_template(
@@ -43,6 +35,6 @@ echo include_template(
         'title' => getTitle(),
         'user_name' => getUsername(),
         'is_auth' => isAuth(),
-        'content' => $template
+        'content' => $mainTemplate
     ]
 );

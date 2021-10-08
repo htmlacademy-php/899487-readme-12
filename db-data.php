@@ -28,7 +28,7 @@ function getDataFromDatabase($connection, $query)
 
 function getPosts($connection, $condition)
 {
-    $queryFragment = $condition ? "WHERE {$condition}" : "";
+    $queryFragment = $condition ? "{$condition}" : "";
 
     return getDataFromDatabase($connection, "
         SELECT
@@ -53,7 +53,7 @@ function getPosts($connection, $condition)
 
 function getPost($connection, $getId)
 {
-    return getPosts($connection, "posts.id = '{$getId}'");
+    return getPosts($connection, "WHERE posts.id = '{$getId}'");
 }
 
 function getPostLikes($connection, $getId)
@@ -142,7 +142,7 @@ function getContentTypes($connection, $condition)
 
 function checkFieldsValidity($postData, $contentTypeId) {
     $errors = [];
-    
+
     if (!$postData['title']) {
         array_push($errors, 'title');
     }
@@ -236,8 +236,8 @@ function prepareNewPostData($connection)
         insertDataIntoDb($connection, $query, 'Пост');
     }
 
-    
-    
+
+
 }
 
 function getExistedTagId($connection, $tag)
