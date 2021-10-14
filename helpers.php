@@ -342,3 +342,11 @@ function getErrorTemplate()
     header("HTTP/1.1 404 Not Found");
     return include_template('404.php');
 }
+
+function isIdAvailable($id, $contentTypes) {
+    $idArr = [];
+    foreach ($contentTypes as $contentType) {
+        array_push($idArr, $contentType['id']);
+    }
+    return $id ? in_array($id, $idArr) : true;
+}

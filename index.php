@@ -5,29 +5,29 @@ require_once('./db-data.php');
 $connection = getConnection();
 $getId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-$postsTemplate = '';
+$template = '';
 
 $condition = !$getId ? '' : "WHERE content_types.id = '{$getId}'";
 $posts = getPosts($connection, $condition);
 
 $contentTypes = getContentTypes($connection, '');
 
-if ($posts) {
-    $postsTemplate = include_template('posts.php', [
-        'posts' => $posts
-    ]);
+if (!isIdAvailable($getId, $contentTypes) || $getId === false) {
+    $template = getErrorTemplate();
 } else {
-    $postsTemplate = include_template('no-posts.php');
-}
-
-$mainTemplate = include_template('main.php', [
-        'contentTypes' => $contentTypes,
-        'content' => $postsTemplate
-    ]
-);
-
-if (!getContentTypes($connection, $condition) || $getId === false) {
-    $mainTemplate = getErrorTemplate();
+    if ($posts) {
+        $template = include_template('main.php', [
+            'contentTypes' => $contentTypes,
+            'content' => include_template('posts.php', [
+                'posts' => $posts
+            ])
+        ]);
+    } else {
+        $template = include_template('main.php', [
+            'contentTypes' => $contentTypes,
+            'content' => include_template('no-posts.php')
+        ]);
+    }
 }
 
 echo include_template(
@@ -35,6 +35,6 @@ echo include_template(
         'title' => getTitle(),
         'user_name' => getUsername(),
         'is_auth' => isAuth(),
-        'content' => $mainTemplate
+        'content' => $template
     ]
 );
