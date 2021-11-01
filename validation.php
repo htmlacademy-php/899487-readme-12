@@ -3,6 +3,10 @@
 const TAGS_MAX = 5;
 const TAGS_MAX_LENGTH = 20;
 
+$tags = getTags();
+
+$errors = [];
+
 function getTags()
 {
     if ($_POST['tags'] !== '') {
@@ -10,38 +14,51 @@ function getTags()
             return $tag !== '';
         }, ARRAY_FILTER_USE_KEY);
     }
-//    echo 'Укажите хэш-теги.';
     return false;
 }
 
-function checkTagsValidity($tags)
+function getTagsError($tags)
 {
-    foreach ($tags as $tag) {
-        $repeats = array_filter($tags , function ($checkedTag) use ($tag) {
-            return strtolower($tag) === strtolower($checkedTag);
-            }, ARRAY_FILTER_USE_KEY);
+    if (!$tags) {
+        return 'Укажите хэш-теги.';
+    } else {
+        foreach ($tags as $tag) {
+            $repeats = array_filter($tags , function ($checkedTag) use ($tag) {
+                return $tag !== '' ? strtolower($tag) === strtolower($checkedTag) : '';
+            });
 
-        if (count($repeats) > 1) {
-            echo 'Один и тот же хэш-тег не может быть использован дважды';
-            return false;
-        }
+            if (count($repeats) > 1) {
+                return 'Один и тот же хэш-тег не может быть использован дважды';
+            }
 
-        if (count($tags) > TAGS_MAX) {
-            echo 'Нельзя указать больше пяти хэш-тегов.';
-            return false;
-        }
+            if (count($tags) > TAGS_MAX) {
+                return 'Нельзя указать больше пяти хэш-тегов.';
+            }
 
-        if (strlen($tag) > TAGS_MAX_LENGTH) {
-            echo 'Максимальная длина одного хэш-тега 20 символов.';
-            return false;
+            if (strlen($tag) > TAGS_MAX_LENGTH) {
+                return 'Максимальная длина одного хэш-тега 20 символов.';
+            }
         }
     }
-    return $tags;
+    return false;
 }
 
-function getValidTags()
-{
-    return getTags() ? checkTagsValidity(getTags()) : false;
+
+function getFormError($input, $field) {
+    if (strlen(trim($input)) === 0) {
+        switch($field) {
+            case 'title':
+                return 'Введите заголовок';
+                break;
+            case 'video':
+                return 'Введите ссылку на видео';
+                break;
+            case 'link':
+                return 'Введите ссылку';
+                break;
+        }
+    }
+    return false;
 }
 
 function checkImageValidity()

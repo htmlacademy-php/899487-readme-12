@@ -235,9 +235,6 @@ function prepareNewPostData($connection)
 
         insertDataIntoDb($connection, $query, 'Пост');
     }
-
-
-
 }
 
 function getExistedTagId($connection, $tag)
@@ -246,13 +243,12 @@ function getExistedTagId($connection, $tag)
     return getDataFromDatabase($connection, $query);
 }
 
-function insertTagsIntoDb($connection)
+function insertTagsIntoDb($connection, $validTags)
 {
-    $tags = getValidTags();
     $postId = mysqli_insert_id($connection);
 
-    if ($tags) {
-        foreach ($tags as $tag) {
+    if ($validTags) {
+        foreach ($validTags as $tag) {
             $tagId = getExistedTagId($connection, $tag)[0]['id'];
 
             if (!$tagId) {
@@ -261,12 +257,11 @@ function insertTagsIntoDb($connection)
                 $tagId = getExistedTagId($connection, $tag)[0]['id'];
             }
 
-            $postHashtagsQuery = "INSERT INTO posts_hashtags
-                    (post_id, hashtag_id)
-                    VALUES (
-                        '{$postId}',
-                        '{$tagId}'
-                    )";
+            $postHashtagsQuery = "INSERT INTO posts_hashtags (post_id, hashtag_id)
+                VALUES (
+                    '{$postId}',
+                    '{$tagId}'
+                )";
 
             insertDataIntoDb($connection, $postHashtagsQuery, 'Хэш-тэг');
         }
