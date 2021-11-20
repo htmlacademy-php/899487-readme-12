@@ -43,23 +43,29 @@ function getTagsError($tags)
     return false;
 }
 
-
-function getFormError($input, $field) {
+function isInvalidStringLength($input, $dataType) {
     if (strlen(trim($input)) === 0) {
-        switch($field) {
+        switch($dataType) {
             case 'title':
-                return 'Введите заголовок';
-                break;
-            case 'video':
-                return 'Введите ссылку на видео';
+                return 'Введите заголовок.';
                 break;
             case 'link':
-                return 'Введите ссылку';
+                return 'Введите ссылку.';
+                break;
+            case 'content':
+                return 'Введите текст публикации.';
+                break;
+            case 'quote':
+                return 'Введите текст цитаты.';
+                break;
+            case 'quote_author':
+                return 'Введите имя автора.';
                 break;
         }
     }
-    return false;
+    
 }
+
 
 function checkImageValidity()
 {
@@ -86,7 +92,7 @@ function checkImageValidity()
         return true;
     }
 
-    if ($_POST['content_type_id'] == 1 && filter_var($_POST['link'],FILTER_VALIDATE_URL) && $_POST['link'] !== '' && $_FILES['image']['name'] === '') {
+    if ($_POST['content_type_id'] == 1 && filter_var($_POST['link'], FILTER_VALIDATE_URL) && $_POST['link'] !== '' && $_FILES['image']['name'] === '') {
         echo 'Картинка добавлена.';
         return true;
     }

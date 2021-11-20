@@ -34,26 +34,12 @@
                             <? endif; ?>
                         ">
                         <h2 class="visually-hidden">Форма добавления <?= $contentType['name'] ?></h2>
-                        <form class="adding-post__form form" action="../add.php" method="post" enctype="multipart/form-data">
-                            <input class="visually-hidden" type="text" name="content_type_id" value="<?= $contentType['id'] ?>">
-
+                        <form class="adding-post__form form" action="add.php" method="post" enctype="multipart/form-data">
                             <?php if ($contentType['icon_class'] === 'photo'): ?>
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
                                     <?= $formTitle ?>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
-                                        <div class="form__input-section <?= $linkError ? 'form__input-section--error' : '' ?>">
-                                            <input class="adding-post__input form__input" id="photo-url" type="text" name="link" placeholder="Введите ссылку">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div style="display: <?= $linkError ? 'block' : 'none' ?>  " class="form__error-text">
-                                                <h3 class="form__error-title">Ошибка добавления ссылки.</h3>
-                                                <p class="form__error-desc">
-                                                    <?= $linkError; ?>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?= $formLink ?>
                                     <?= $formTags ?>
                                 </div>
                                 <?= $formError ?>
@@ -61,7 +47,7 @@
                             <div class="adding-post__input-file-container form__input-container form__input-container--file">
                                 <div class="adding-post__input-file-wrapper form__input-file-wrapper">
                                     <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
-                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="image" title=" ">
+                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="userpic-file-photo" title=" ">
                                         <div class="form__file-zone-text">
                                             <span>Перетащите фото сюда</span>
                                         </div>
@@ -83,13 +69,7 @@
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
                                     <?= $formTitle ?>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="video-url">Ссылка youtube <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="video-url" type="text" name="video" placeholder="Введите ссылку">
-                                            <?= $inputError ?>
-                                        </div>
-                                    </div>
+                                    <?= $formLink ?>
                                     <?= $formTags ?>
                                 </div>
                                 <?= $formError ?>
@@ -102,9 +82,15 @@
                                     <?= $formTitle ?>
                                     <div class="adding-post__textarea-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?= $contentError ? 'form__input-section--error' : '' ?>">
                                             <textarea class="adding-post__textarea form__textarea form__input" id="content" name="content" placeholder="Введите текст публикации"></textarea>
-                                            <?= $inputError ?>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div style="display: <?= $contentError ? 'block' : 'none' ?>  " class="form__error-text">
+                                                <h3 class="form__error-title">Ошибка добавления текста.</h3>
+                                                <p class="form__error-desc">
+                                                    <?= $contentError ?>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                     <?= $formTags ?>
@@ -117,16 +103,28 @@
                                 <div class="form__text-inputs">
                                     <div class="adding-post__input-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="cite-text">Текст цитаты <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?= $quoteError ? 'form__input-section--error' : '' ?>">
                                             <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="content" name="cite-text" placeholder="Текст цитаты"></textarea>
-                                            <?= $inputError ?>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div style="display: <?= $quoteError ? 'block' : 'none' ?>  " class="form__error-text">
+                                                <h3 class="form__error-title">Ошибка добавления цитаты.</h3>
+                                                <p class="form__error-desc">
+                                                    <?= $quoteError ?>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="adding-post__textarea-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="quote-author">Автор <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?= $quoteAuthorError ? 'form__input-section--error' : '' ?>">
                                             <input class="adding-post__input form__input" id="quote-author" type="text" name="quote_author">
-                                            <?= $inputError ?>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div style="display: <?= $quoteAuthorError ? 'block' : 'none' ?>  " class="form__error-text">
+                                                <h3 class="form__error-title">Ошибка добавления автора.</h3>
+                                                <p class="form__error-desc">
+                                                    <?= $quoteAuthorError ?>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                     <?= $formTags ?>
@@ -139,19 +137,7 @@
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
                                     <?= $formTitle ?>
-                                    <div class="adding-post__textarea-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="post-link" type="text" name="link">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div style="display: <?= $linkError ? 'block' : 'none' ?>  " class="form__error-text">
-                                                <h3 class="form__error-title">Ошибка добавления ссылки.</h3>
-                                                <p class="form__error-desc">
-                                                    <?= $linkError; ?>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?= $formLink ?>
                                     <?= $formTags ?>
                                     </div>
                                 <?= $formError ?>
@@ -188,8 +174,3 @@
         </div>
     </div>
 </div>
-
-<script src="libs/dropzone.js"></script>
-<script src="js/dropzone-settings.js"></script>
-<script src="js/main.js"></script>
-
