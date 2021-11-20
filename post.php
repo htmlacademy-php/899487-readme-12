@@ -6,13 +6,13 @@ $connection = getConnection();
 $getId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 $template = '';
-$postData = !$getId ? false : getPost($connection, $getId);
+$post = !$getId ? false : getPost($connection, $getId);
 
-if (!$postData) {
+if (!$post) {
     $template = getErrorTemplate();
 } else {
     $template = include_template('post-details.php', [
-        'post' => $postData,
+        'post' => $post,
         'postTemplate' => getPostTemplate(getPost($connection, $getId)),
         'postComments' => getPostComments($connection, $getId),
         'postAuthor' => getPostAuthor($connection, $getId),

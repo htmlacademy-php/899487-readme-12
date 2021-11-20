@@ -28,7 +28,7 @@ function getDataFromDatabase($connection, $query)
 
 function getPosts($connection, $condition)
 {
-    $queryFragment = $condition ? "WHERE {$condition}" : "";
+    $queryFragment = $condition ? "{$condition}" : "";
 
     return getDataFromDatabase($connection, "
         SELECT
@@ -53,7 +53,7 @@ function getPosts($connection, $condition)
 
 function getPost($connection, $getId)
 {
-    return getPosts($connection, "posts.id = '{$getId}'");
+    return getPosts($connection, "WHERE posts.id = '{$getId}'");
 }
 
 function getPostLikes($connection, $getId)
@@ -132,9 +132,46 @@ function getPostTemplate($post)
     }
 }
 
-function getContentTypes($connection)
+function getContentTypes($connection, $condition)
 {
-    return getDataFromDatabase($connection,"SELECT * FROM content_types");
+    return getDataFromDatabase($connection,"
+        SELECT * FROM content_types
+        {$condition}
+    ");
+}
+
+function checkFieldsValidity($postData, $contentTypeId) {
+    $errors = [];
+
+    if (!$postData['title']) {
+        array_push($errors, 'title');
+    }
+
+    if ($contentTypeId === 1 && !$postData['image']) {
+        array_push($errors, 'image');
+    }
+
+    if ($contentTypeId === 2 && !$postData['video']) {
+        array_push($errors, 'video');
+    }
+
+    if ($contentTypeId === 3 && !$postData['content']) {
+        array_push($errors, 'content');
+    }
+
+    if ($contentTypeId === 4 && !$postData['content']) {
+        array_push($errors, 'content');
+    }
+
+    if ($contentTypeId === 4 && !$postData['quote_author']) {
+        array_push($errors, 'quote_author');
+    }
+
+    if ($contentTypeId === 5 && !$postData['link']) {
+        array_push($errors, 'link');
+    }
+
+    return $errors;
 }
 
 function getNewPostData()
@@ -164,20 +201,25 @@ function getNewPostData()
 
 function insertDataIntoDb($connection, $query, $dataType)
 {
-    if (mysqli_query($connection, $query)) {
-        echo "{$dataType} - успешно добавлено.";
-    } else {
-        echo "Ошибка добавления данных в базу данных. Код ошибки - " . mysqli_connect_errno() . ": " . mysqli_error($connection);
-    }
+    mysqli_query($connection, $query);
+
+//    if (mysqli_query($connection, $query)) {
+//        echo "{$dataType} - успешно добавлено.";
+//    } else {
+//        echo "Ошибка добавления данных в базу данных. Код ошибки - " . mysqli_connect_errno() . ": " . mysqli_error($connection);
+//    }
 }
 
 function prepareNewPostData($connection)
 {
     $data = getNewPostData();
-    $views = intval($data['views']);
     $contentTypeId = intval($data['content_type_id']);
+    $views = intval($data['views']);
 
-    $query = "
+    if (checkFieldsValidity($data, $contentTypeId)) {
+        return false;
+    } else {
+        $query = "
         INSERT INTO posts SET
             created_at = '". mysqli_real_escape_string($connection, "{$data['created_at']}") ."',
             title = '". mysqli_real_escape_string($connection, "{$data['title']}") ."',
@@ -189,18 +231,44 @@ function prepareNewPostData($connection)
             views = '". $views ."',
             author_id = '". 1 ."',
             content_type_id = '". "{$contentTypeId}" ."'
-    ";
+        ";
 
-    insertDataIntoDb($connection, $query, 'Пост');
+        insertDataIntoDb($connection, $query, 'Пост');
+    }
 }
 
-function prepareTagsData($connection)
+function getExistedTagId($connection, $tag)
 {
-    $tags = getValidTags();
-    if ($tags) {
-        foreach ($tags as $tag) {
-            $query = "INSERT INTO hashtags (name) VALUES ('{$tag}')";
-            insertDataIntoDb($connection, $query, 'Хэш-тэг');
+    $query = "SELECT id FROM hashtags WHERE name = '{$tag}'";
+    return getDataFromDatabase($connection, $query);
+}
+
+function insertTagsIntoDb($connection, $validTags)
+{
+    $postId = mysqli_insert_id($connection);
+
+    if ($validTags) {
+        foreach ($validTags as $tag) {
+            $tagId = getExistedTagId($connection, $tag)[0]['id'];
+
+            if (!$tagId) {
+                $hashtagsQuery = "INSERT INTO hashtags (name) VALUES ('{$tag}')";
+                insertDataIntoDb($connection , $hashtagsQuery , 'Хэш-тэг');
+                $tagId = getExistedTagId($connection, $tag)[0]['id'];
+            }
+
+            $postHashtagsQuery = "INSERT INTO posts_hashtags (post_id, hashtag_id)
+                VALUES (
+                    '{$postId}',
+                    '{$tagId}'
+                )";
+
+            insertDataIntoDb($connection, $postHashtagsQuery, 'Хэш-тэг');
         }
     }
 }
+
+$requiredFields = [
+    'photo-heading'
+];
+
